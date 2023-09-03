@@ -1,17 +1,23 @@
 <template>
     <nav class="navbar">
-        <router-link class="navbar__link" to="/">Home</router-link>
+        <router-link class="navbar__link" to="/"> Home </router-link>
         <router-link class="navbar__link" to="/login">Login</router-link>
         <router-link class="navbar__link" to="/signup">SignUp</router-link>
+        <button class="navbar__link" @click="logOutUser" v-if="isAuthenticated">
+            LogOut
+        </button>
     </nav>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 export default {
     name: "NavigationBar",
     computed: {
         ...mapGetters(["isAuthenticated"]),
+    },
+    methods: {
+        ...mapActions(["logOutUser"]),
     },
 };
 </script>

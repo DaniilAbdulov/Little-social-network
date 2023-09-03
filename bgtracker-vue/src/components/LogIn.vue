@@ -10,6 +10,7 @@
                         id="username"
                         v-model="user.username"
                         required
+                        autocomplete="username"
                     />
                 </div>
                 <div class="log-reg-form__item">
@@ -17,8 +18,8 @@
                     <input
                         type="password"
                         id="password"
-                        v-model="user.password"
                         required
+                        autocomplete="current-password"
                     />
                 </div>
                 <button type="submit">Log In</button>

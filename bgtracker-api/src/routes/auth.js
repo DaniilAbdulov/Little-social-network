@@ -19,7 +19,7 @@ router.get("/currentUser", authenticate, async (req, res) => {
         res.status(404).json({});
     }
 });
-router.post("/login", async (err, req, res) => {
+router.post("/login", async (req, res) => {
     const { username, password } = req.body;
     try {
         const user = await User.query().findOne({ username });
@@ -30,7 +30,7 @@ router.post("/login", async (err, req, res) => {
         const isPasswordValid = await bcrypt.compare(password, user.password);
         if (!isPasswordValid) {
             console.error(
-                `Invalid password for user: ${password} + "not equal" + ${user.password}}`
+                `Invalid password for user: ${password} "not equal" ${user.password}}`
             );
             return res.status(400).json({ message: "Invalid password" });
         }
@@ -50,7 +50,7 @@ router.post("/login", async (err, req, res) => {
             token,
         });
     } catch (error) {
-        console.error(err.stack);
+        console.error(error);
         res.status(500).json({ message: "Server error" });
     }
 });

@@ -38,9 +38,19 @@ export default createStore({
                 commit("CURRENT_USER_FETCHED", user);
                 localStorage.setItem("bgtrackerjwt", token);
                 axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+                this.getters.isAuthenticated;
             } catch (error) {
                 console.error(error);
             }
+        },
+        logOutUser({ commit }) {
+            commit("CURRENT_USER_FETCHED", {
+                id: null,
+                email: "",
+                username: "",
+            });
+            localStorage.removeItem("bgtrackerjwt");
+            axios.defaults.headers.common.Authorization = null;
         },
     },
     modules: {},
