@@ -36,6 +36,7 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
     data() {
         return {
@@ -48,8 +49,13 @@ export default {
     },
     methods: {
         async handleSubmit() {
-            this.logIn = true;
-            // Call API or store action to log in the user
+            try {
+                await this.$store.dispatch("logInUser", this.user);
+                this.logIn = true;
+            } catch (error) {
+                // Обработка ошибки здесь
+                console.error(error);
+            }
         },
     },
 };

@@ -7,9 +7,11 @@
         "knex:seed": "cross-env NODE_ENV=development knex seed:run --knexfile src/knexfile.js"
     },
     "dependencies": {
+        "bcryptjs": "^2.4.3",
         "cross-env": "^7.0.3",
         "dotenv": "^16.3.1",
         "express": "^4.18.2",
+        "jsonwebtoken": "^9.0.2",
         "knex": "^2.5.1",
         "nodemon": "^3.0.1",
         "objection": "^3.1.1",

@@ -1,4 +1,11 @@
-exports.seed = (knex) => {
+const bcrypt = require("bcryptjs");
+
+async function hashPassword(password) {
+    const salt = await bcrypt.genSalt(10);
+    return await bcrypt.hash(password, salt);
+}
+exports.seed = async (knex) => {
+    const hashedPassword = await hashPassword("admin");
     return knex("users")
         .del()
         .then(() => {
@@ -6,8 +13,8 @@ exports.seed = (knex) => {
                 {
                     id: 1,
                     email: "abdulov.dany@yandex.ru",
-                    username: "danila",
-                    password: "2324532sdfvsdfgfgdgs",
+                    username: "admin",
+                    password: hashedPassword,
                 },
             ]);
         });
