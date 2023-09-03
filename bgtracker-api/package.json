@@ -1,6 +1,6 @@
 {
     "scripts": {
-        "serve": "cross-env NODE_ENV=development nodemon src/server.js",
+        "serve": "cross-env NODE_ENV=development nodemon src/app.js",
         "knex:make": "cross-env NODE_ENV=development knex migrate:make --knexfile src/knexfile.js",
         "knex:migrate": "cross-env NODE_ENV=development knex migrate:latest --knexfile src/knexfile.js",
         "knex:rollback": "cross-env NODE_ENV=development knex migrate:rollback --knexfile src/knexfile.js",

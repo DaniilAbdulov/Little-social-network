@@ -21,5 +21,7 @@ app.get("/", (req, res) => {
         join(__dirname, "..", "..", "bgtracker-vue", "public", "index.html")
     );
 });
-
+app.listen(process.env.PORT, () =>
+    console.log(`Running on ${process.env.PORT}`)
+);
 module.exports = app;

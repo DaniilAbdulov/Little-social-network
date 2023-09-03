@@ -12,6 +12,9 @@ export default {
         NavigationBar,
     },
     name: "App",
+    created() {
+        this.$store.dispatch("lognsig/initialLoad");
+    },
 };
 </script>
 

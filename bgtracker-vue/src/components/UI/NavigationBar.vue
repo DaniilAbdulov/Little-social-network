@@ -14,10 +14,14 @@ import { mapGetters, mapActions } from "vuex";
 export default {
     name: "NavigationBar",
     computed: {
-        ...mapGetters(["isAuthenticated"]),
+        ...mapGetters("lognsig", {
+            isAuthenticated: "isAuthenticated",
+        }),
     },
     methods: {
-        ...mapActions(["logOutUser"]),
+        ...mapActions("lognsig", {
+            logOutUser: "logOutUser",
+        }),
     },
 };
 </script>

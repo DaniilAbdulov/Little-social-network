@@ -15,6 +15,7 @@ exports.seed = async (knex) => {
                     email: "abdulov.dany@yandex.ru",
                     username: "admin",
                     password: hashedPassword,
+                    role: "admin",
                 },
             ]);
         });

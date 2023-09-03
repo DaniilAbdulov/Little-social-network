@@ -10,6 +10,7 @@
                         id="username"
                         v-model="user.username"
                         autocomplete="username"
+                        placeholder="gendalf"
                         required
                     />
                 </div>
@@ -21,7 +22,7 @@
                         v-model="user.password"
                         autocomplete="current-password"
                         required
-                        placeholder="password"
+                        placeholder="****"
                     />
                 </div>
                 <button type="submit">Log In</button>
@@ -34,13 +35,15 @@
                 Let's see what is going on here
                 <router-link to="/">Home</router-link>
             </p>
+            <p>Your rights are {{ userrole }} rights</p>
         </div>
         <div v-else-if="errorMessage">{{ errorMessage }}</div>
     </div>
 </template>
 
 <script>
-import { mapGetters, mapMutations } from "vuex";
+import { mapGetters, mapActions } from "vuex";
+
 export default {
     data() {
         return {
@@ -53,22 +56,32 @@ export default {
     methods: {
         async handleSubmit() {
             try {
-                await this.$store.dispatch("logInUser", this.user);
+                await this.logInUser(this.user);
             } catch (error) {
                 // Обработка ошибки здесь
                 console.error(error);
             }
         },
-        ...mapMutations(["logInUser"]),
+        ...mapActions("lognsig", {
+            logInUser: "logInUser",
+        }),
     },
     computed: {
-        ...mapGetters(["isAuthenticated"]),
+        ...mapGetters("lognsig", {
+            isAuthenticated: "isAuthenticated",
+        }),
         username() {
-            return this.$store.state.user.username;
+            return this.$store.state.lognsig.user.username;
+        },
+        userrole() {
+            return this.$store.state.lognsig.user.role;
         },
         errorMessage() {
-            return this.$store.state.errorMessage;
+            return this.$store.state.lognsig.errorMessage;
         },
+    },
+    created() {
+        this.$store.dispatch("lognsig/initialLoad");
     },
 };
 </script>

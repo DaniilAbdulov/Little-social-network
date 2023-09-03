@@ -13,6 +13,7 @@ router.get("/currentUser", authenticate, async (req, res) => {
                 id: user.id,
                 email: user.email,
                 username: user.username,
+                role: user.role,
             },
         });
     } else {
@@ -42,6 +43,7 @@ router.post("/login", async (req, res) => {
                 id: user.id,
                 username: user.username,
                 email: user.email,
+                role: user.role,
             },
             token,
         });
