@@ -22,7 +22,7 @@ export default createStore({
     },
     actions: {
         async initialLoad(context) {
-            if (localStorage.bjtrackerjwt) {
+            if (localStorage.bgtrackerjwt) {
                 axios.defaults.headers.common.Authorization = `Bearer ${localStorage.bjtrackerjwt}`;
                 const res = await axios.get("/api/auth/currentUser");
                 context.commit("CURRENT_USER_FETCHED", res.data.user);
@@ -36,7 +36,7 @@ export default createStore({
                 });
                 const { user, token } = response.data;
                 commit("CURRENT_USER_FETCHED", user);
-                localStorage.setItem("bjtrackerjwt", token);
+                localStorage.setItem("bgtrackerjwt", token);
                 axios.defaults.headers.common.Authorization = `Bearer ${token}`;
             } catch (error) {
                 console.error(error);

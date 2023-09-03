@@ -19,7 +19,7 @@ router.get("/currentUser", authenticate, async (req, res) => {
         res.status(404).json({});
     }
 });
-router.post("/login", async (req, res) => {
+router.post("/login", async (err, req, res) => {
     const { username, password } = req.body;
     try {
         const user = await User.query().findOne({ username });
@@ -50,7 +50,7 @@ router.post("/login", async (req, res) => {
             token,
         });
     } catch (error) {
-        console.error(error);
+        console.error(err.stack);
         res.status(500).json({ message: "Server error" });
     }
 });
