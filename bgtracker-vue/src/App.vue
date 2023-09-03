@@ -1,14 +1,12 @@
 <template>
     <div>
         <navigation-bar />
-        <div v-if="loading">Loading....</div>
-        <div v-if="!loading && !error">Welcome</div>
-        <div v-if="!loading && error">Something wrong</div>
+        <router-view></router-view>
     </div>
 </template>
 
 <script>
-import NavigationBar from "./layout/NavigationBar";
+import NavigationBar from "./components/UI/NavigationBar.vue";
 import { mapActions } from "vuex";
 export default {
     components: {
@@ -36,4 +34,9 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+* {
+    margin: 0;
+    padding: 0;
+}
+</style>

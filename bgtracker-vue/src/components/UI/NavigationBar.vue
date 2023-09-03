@@ -1,0 +1,33 @@
+<template>
+    <nav class="navbar">
+        <router-link class="navbar__link" to="/">Home</router-link>
+        <router-link class="navbar__link" to="/login">Login</router-link>
+        <router-link class="navbar__link" to="/signup">SignUp</router-link>
+    </nav>
+</template>
+
+<script>
+import { mapGetters } from "vuex";
+export default {
+    name: "NavigationBar",
+    computed: {
+        ...mapGetters(["isAuthenticated"]),
+    },
+};
+</script>
+
+<style>
+.navbar {
+    display: flex;
+    gap: 20px;
+    background: gold;
+    height: 30px;
+    align-items: center;
+    padding: 10px;
+    margin-bottom: 30px;
+}
+.navbar__link {
+    color: black;
+    text-decoration: none;
+}
+</style>
