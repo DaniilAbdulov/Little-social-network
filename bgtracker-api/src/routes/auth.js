@@ -24,17 +24,10 @@ router.post("/login", async (req, res) => {
     try {
         const user = await User.query().findOne({ username });
         if (!user) {
-            console.error(`Invalid username for user: ${username}`);
             return res.status(404).json({ message: "User not found" });
         }
         const isPasswordValid = await bcrypt.compare(password, user.password);
         if (!isPasswordValid) {
-            if (!password) {
-                console.log("password is empty. But why ?");
-            }
-            console.error(
-                `Invalid password for user: ${password} "not equal" ${user.password}}`
-            );
             return res.status(400).json({ message: "Invalid password" });
         }
         const token = jwt.sign(

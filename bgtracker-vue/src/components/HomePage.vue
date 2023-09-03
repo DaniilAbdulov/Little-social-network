@@ -1,7 +1,6 @@
 <template>
     <div>
-        <div v-if="loading">Loading....</div>
-        <div class="content" v-if="!loading && isAuthenticated">
+        <div class="content" v-if="isAuthenticated">
             <h1>Hello</h1>
             <h2>It's my auth page</h2>
             <p>
@@ -11,35 +10,15 @@
                 provident vitae natus ipsum.
             </p>
         </div>
-        <div v-if="!loading && !isAuthenticated">
-            Please login to view the content.
-        </div>
+        <div v-if="!isAuthenticated">Please login to view the content.</div>
     </div>
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
+import { mapGetters } from "vuex";
 export default {
-    data() {
-        return {
-            loading: true,
-            error: false,
-        };
-    },
     computed: {
         ...mapGetters(["isAuthenticated"]),
-    },
-    methods: {
-        ...mapActions(["initialLoad"]),
-    },
-    async mounted() {
-        try {
-            await this.initialLoad();
-            this.loading = false;
-        } catch (error) {
-            this.loading = false;
-            this.error = true;
-        }
     },
 };
 </script>

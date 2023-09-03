@@ -7,30 +7,11 @@
 
 <script>
 import NavigationBar from "./components/UI/NavigationBar.vue";
-import { mapActions } from "vuex";
 export default {
     components: {
         NavigationBar,
     },
     name: "App",
-    data() {
-        return {
-            loading: true,
-            error: false,
-        };
-    },
-    methods: {
-        ...mapActions(["initialLoad"]),
-    },
-    async mounted() {
-        try {
-            await this.initialLoad();
-            this.loading = false;
-        } catch (error) {
-            this.loading = false;
-            this.error = true;
-        }
-    },
 };
 </script>
 

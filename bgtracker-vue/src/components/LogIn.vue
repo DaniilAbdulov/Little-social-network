@@ -1,6 +1,6 @@
 <template>
     <div class="login-page">
-        <div class="log-reg-form" v-if="!logIn">
+        <div class="log-reg-form" v-if="!isAuthenticated">
             <h1>Log In</h1>
             <form @submit.prevent="handleSubmit">
                 <div class="log-reg-form__item">
@@ -21,24 +21,26 @@
                         v-model="user.password"
                         autocomplete="current-password"
                         required
+                        placeholder="password"
                     />
                 </div>
                 <button type="submit">Log In</button>
             </form>
         </div>
-        <div class="log-reg-completed" v-if="logIn">
-            <h2>Congratulations</h2>
+        <div class="log-reg-completed" v-if="isAuthenticated">
+            <h2>Congratulations, {{ username }}</h2>
             <p>You are logged in</p>
             <p>
                 Let's see what is going on here
                 <router-link to="/">Home</router-link>
             </p>
         </div>
+        <div v-else-if="errorMessage">{{ errorMessage }}</div>
     </div>
 </template>
 
 <script>
-import axios from "axios";
+import { mapGetters, mapMutations } from "vuex";
 export default {
     data() {
         return {
@@ -46,18 +48,26 @@ export default {
                 username: "",
                 password: "",
             },
-            logIn: false,
         };
     },
     methods: {
         async handleSubmit() {
             try {
                 await this.$store.dispatch("logInUser", this.user);
-                this.logIn = true;
             } catch (error) {
                 // Обработка ошибки здесь
                 console.error(error);
             }
+        },
+        ...mapMutations(["logInUser"]),
+    },
+    computed: {
+        ...mapGetters(["isAuthenticated"]),
+        username() {
+            return this.$store.state.user.username;
+        },
+        errorMessage() {
+            return this.$store.state.errorMessage;
         },
     },
 };

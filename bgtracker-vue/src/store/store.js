@@ -7,6 +7,7 @@ export default createStore({
             email: "",
             username: "",
         },
+        errorMessage: "",
     },
     getters: {
         isAuthenticated(state) {
@@ -18,6 +19,9 @@ export default createStore({
             state.user.id = user.id;
             state.user.email = user.email;
             state.user.username = user.username;
+        },
+        SET_ERROR_MESSAGE(state, message) {
+            state.errorMessage = message;
         },
     },
     actions: {
@@ -40,9 +44,10 @@ export default createStore({
                 axios.defaults.headers.common.Authorization = `Bearer ${token}`;
                 this.getters.isAuthenticated;
             } catch (error) {
-                console.error(error);
+                commit("SET_ERROR_MESSAGE", error.response.data.message);
             }
         },
+
         logOutUser({ commit }) {
             commit("CURRENT_USER_FETCHED", {
                 id: null,
