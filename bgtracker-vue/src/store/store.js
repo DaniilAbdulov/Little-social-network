@@ -8,7 +8,11 @@ export default createStore({
             username: "",
         },
     },
-    getters: {},
+    getters: {
+        isAuthenticated(state) {
+            return !!state.user.id;
+        },
+    },
     mutations: {
         CURRENT_USER_FETCHED(state, user) {
             state.user.id = user.id;
