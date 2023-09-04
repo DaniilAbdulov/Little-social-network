@@ -1,6 +1,9 @@
 <template>
     <div class="login-page">
-        <div class="log-reg-form" v-if="!isAuthenticated">
+        <div
+            class="log-reg-form"
+            v-if="!adminIsAuthenticated || !userIsAuthenticated"
+        >
             <h1>Log In</h1>
             <form @submit.prevent="handleSubmit">
                 <div class="log-reg-form__item">
@@ -28,7 +31,10 @@
                 <button type="submit">Log In</button>
             </form>
         </div>
-        <div class="log-reg-completed" v-if="isAuthenticated">
+        <div
+            class="log-reg-completed"
+            v-if="adminIsAuthenticated || userIsAuthenticated"
+        >
             <h2>Congratulations, {{ username }}</h2>
             <p>You are logged in</p>
             <p>
@@ -68,7 +74,8 @@ export default {
     },
     computed: {
         ...mapGetters("lognsig", {
-            isAuthenticated: "isAuthenticated",
+            adminIsAuthenticated: "adminIsAuthenticated",
+            userIsAuthenticated: "userIsAuthenticated",
         }),
         username() {
             return this.$store.state.lognsig.user.username;

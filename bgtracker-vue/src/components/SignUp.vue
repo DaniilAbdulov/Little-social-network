@@ -1,6 +1,6 @@
 <template>
     <div class="signup-page">
-        <div class="log-reg-form">
+        <div class="log-reg-form" v-if="!regusername">
             <h1>Sign Up</h1>
             <form @submit.prevent="handleSubmit">
                 <div class="log-reg-form__item">
@@ -33,6 +33,14 @@
                 <button type="submit">Sign Up</button>
             </form>
         </div>
+        <div class="log-reg-completed" v-if="regusername">
+            <h2>Congratulations, {{ regusername }}</h2>
+            <p>You are registred</p>
+            <p>
+                Please, LogIn with your username and password
+                <router-link to="/login">Login</router-link>
+            </p>
+        </div>
     </div>
 </template>
 
@@ -60,6 +68,11 @@ export default {
         ...mapActions("lognsig", {
             RegistrationUser: "RegistrationUser",
         }),
+    },
+    computed: {
+        regusername() {
+            return this.$store.state.lognsig.regUser.regUserName;
+        },
     },
 };
 </script>

@@ -8,12 +8,18 @@ export const LogSignModule = {
             role: "",
         },
         errorMessage: "",
+        regUser: {
+            regUserName: "",
+        },
     }),
     //        username() {
     //     return this.$store.state.lognsig.user.username;
     // },для доступа в компонентах
     getters: {
-        isAuthenticated(state) {
+        adminIsAuthenticated(state) {
+            return !!state.user.id;
+        },
+        userIsAuthenticated(state) {
             return !!state.user.id;
         },
     },
@@ -29,6 +35,9 @@ export const LogSignModule = {
         },
         SET_ERROR_MESSAGE(state, message) {
             state.errorMessage = message;
+        },
+        SET_REG_USER(state, newUser) {
+            state.regUser.regUserName = newUser.username;
         },
     },
     actions: {
@@ -56,12 +65,19 @@ export const LogSignModule = {
                 commit("CURRENT_USER_FETCHED", user);
                 localStorage.setItem("bgtrackerjwt", token);
                 axios.defaults.headers.common.Authorization = `Bearer ${token}`;
-                this.getters.isAuthenticated;
+                if (response.data.user.role != "admin") {
+                    this.getters.userIsAuthenticated;
+                } else {
+                    this.getters.adminIsAuthenticated;
+                }
             } catch (error) {
                 commit("SET_ERROR_MESSAGE", error.response.data.message);
             }
         },
-        async RegistrationUser({ commit }, { username, password, email }) {
+        async RegistrationUser(
+            { commit, state },
+            { username, password, email }
+        ) {
             try {
                 const response = await axios.post("/api/auth/register", {
                     username,
@@ -69,9 +85,10 @@ export const LogSignModule = {
                     email,
                 });
                 const { token } = response.data;
-                console.log(response);
-                localStorage.setItem("bgtrackerjwt", token);
-                axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+                const newUser = response.data.user;
+                localStorage.setItem("bgtrackerjwt", token); // сохраняем токен нового пользователя в локальном хранилище
+                axios.defaults.headers.common.Authorization = `Bearer ${token}`; // задаем заголовок Authorization для всех последующих запросов
+                commit("SET_REG_USER", newUser); // обновляем информацию о новом пользователе в состоянии Vuex
             } catch (error) {
                 commit("SET_ERROR_MESSAGE", error.response.data.message);
             }

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="content" v-if="isAuthenticated">
+        <div class="content" v-if="userIsAuthenticated">
             <h1>Hello</h1>
             <h2>It's my auth page</h2>
             <p>
@@ -10,7 +10,7 @@
                 provident vitae natus ipsum.
             </p>
         </div>
-        <div v-if="!isAuthenticated">Please login to view the content.</div>
+        <div v-if="!userIsAuthenticated">Please login to view the content.</div>
     </div>
 </template>
 
@@ -19,7 +19,8 @@ import { mapGetters } from "vuex";
 export default {
     computed: {
         ...mapGetters("lognsig", {
-            isAuthenticated: "isAuthenticated",
+            adminIsAuthenticated: "adminIsAuthenticated",
+            userIsAuthenticated: "userIsAuthenticated",
         }),
     },
 };

@@ -3,7 +3,11 @@
         <router-link class="navbar__link" to="/"> Home </router-link>
         <router-link class="navbar__link" to="/login">Login</router-link>
         <router-link class="navbar__link" to="/signup">SignUp</router-link>
-        <button class="navbar__link" @click="logOutUser" v-if="isAuthenticated">
+        <button
+            class="navbar__link"
+            @click="logOutUser"
+            v-if="adminIsAuthenticated || userIsAuthenticated"
+        >
             LogOut
         </button>
     </nav>
@@ -15,7 +19,8 @@ export default {
     name: "NavigationBar",
     computed: {
         ...mapGetters("lognsig", {
-            isAuthenticated: "isAuthenticated",
+            adminIsAuthenticated: "adminIsAuthenticated",
+            userIsAuthenticated: "userIsAuthenticated",
         }),
     },
     methods: {
