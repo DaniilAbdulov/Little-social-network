@@ -80,9 +80,6 @@ export default {
             return this.$store.state.lognsig.errorMessage;
         },
     },
-    created() {
-        this.$store.dispatch("lognsig/initialLoad");
-    },
 };
 </script>
 

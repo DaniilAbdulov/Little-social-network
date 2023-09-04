@@ -57,9 +57,21 @@ export const LogSignModule = {
                 localStorage.setItem("bgtrackerjwt", token);
                 axios.defaults.headers.common.Authorization = `Bearer ${token}`;
                 this.getters.isAuthenticated;
-                setTimeout(() => {
-                    dispatch("logOutUser");
-                }, 3600000);
+            } catch (error) {
+                commit("SET_ERROR_MESSAGE", error.response.data.message);
+            }
+        },
+        async RegistrationUser({ commit }, { username, password, email }) {
+            try {
+                const response = await axios.post("/api/auth/register", {
+                    username,
+                    password,
+                    email,
+                });
+                const { token } = response.data;
+                console.log(response);
+                localStorage.setItem("bgtrackerjwt", token);
+                axios.defaults.headers.common.Authorization = `Bearer ${token}`;
             } catch (error) {
                 commit("SET_ERROR_MESSAGE", error.response.data.message);
             }

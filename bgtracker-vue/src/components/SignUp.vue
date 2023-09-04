@@ -1,6 +1,6 @@
 <template>
     <div class="signup-page">
-        <div class="log-reg-form" v-if="!signUp">
+        <div class="log-reg-form">
             <h1>Sign Up</h1>
             <form @submit.prevent="handleSubmit">
                 <div class="log-reg-form__item">
@@ -33,18 +33,11 @@
                 <button type="submit">Sign Up</button>
             </form>
         </div>
-        <div class="log-reg-completed" v-if="signUp">
-            <h2>Congratulations</h2>
-            <p>You have completed the registration procedure</p>
-            <p>
-                Let's go to the
-                <router-link to="/login">LogIn</router-link> page
-            </p>
-        </div>
     </div>
 </template>
 
 <script>
+import { mapActions } from "vuex";
 export default {
     data() {
         return {
@@ -53,14 +46,20 @@ export default {
                 email: "",
                 password: "",
             },
-            signUp: false,
         };
     },
     methods: {
         async handleSubmit() {
-            this.signUp = true;
-            // Call API or store action to sign up the user
+            try {
+                await this.RegistrationUser(this.user);
+            } catch (error) {
+                // Обработка ошибки здесь
+                console.error(error);
+            }
         },
+        ...mapActions("lognsig", {
+            RegistrationUser: "RegistrationUser",
+        }),
     },
 };
 </script>
