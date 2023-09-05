@@ -30,6 +30,15 @@
                         required
                     />
                 </div>
+                <div class="log-reg-form__item">
+                    <label for="repeatpassword">Please, repeat password:</label>
+                    <input
+                        type="password"
+                        id="repeatpassword"
+                        v-model="user.repeatpassword"
+                        required
+                    />
+                </div>
                 <button type="submit">Sign Up</button>
             </form>
         </div>
@@ -41,6 +50,7 @@
                 <router-link to="/login">Login</router-link>
             </p>
         </div>
+        <div v-else-if="errorMessage">{{ errorMessage }}</div>
     </div>
 </template>
 
@@ -53,6 +63,7 @@ export default {
                 username: "",
                 email: "",
                 password: "",
+                repeatpassword: "",
             },
         };
     },
@@ -72,6 +83,9 @@ export default {
     computed: {
         regusername() {
             return this.$store.state.lognsig.regUser.regUserName;
+        },
+        errorMessage() {
+            return this.$store.state.lognsig.errorMessage;
         },
     },
 };

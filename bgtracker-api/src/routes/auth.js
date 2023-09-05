@@ -60,28 +60,37 @@ router.post(
 router.post(
     "/register",
     asyncHandler(async (req, res) => {
-        const { username, email, password } = req.body;
-
+        const { username, email, password, repeatpassword } = req.body;
         // Check for required fields
         if (!username || !email || !password) {
             return res.status(400).json({ message: "All fields are required" });
         }
+        if (password !== repeatpassword) {
+            return res
+                .status(400)
+                .json({ message: "Please check your password" });
+        }
 
         try {
-            // Check for existing username or email
-            const usernameExists = await User.query().findOne({ username });
-            if (usernameExists) {
-                return res
-                    .status(400)
-                    .json({ message: "Username already exists" });
-            }
-            const emailExists = await User.query().findOne({ email });
-            if (emailExists) {
-                return res
-                    .status(400)
-                    .json({ message: "Email already exists" });
-            }
+            const existingUser = await User.query()
+                .where({ username })
+                .orWhere({ email })
+                .first();
 
+            let errorMessage = "";
+
+            if (existingUser) {
+                if (existingUser.username === username) {
+                    errorMessage += "Username already exists";
+                }
+                if (existingUser.email === email) {
+                    if (errorMessage) {
+                        errorMessage += " and ";
+                    }
+                    errorMessage += "Email already exists";
+                }
+                return res.status(400).json({ message: errorMessage });
+            }
             // Create new user without hashing password manually
             const newUser = await User.query().insert({
                 username,
