@@ -22,9 +22,11 @@ router.post(
     authenticate,
     asyncHandler(async (req, res) => {
         const { title, body } = req.body;
+        const {id, name} = req.user;
         try {
             const newPost = await Post.query().insert({
-                user_id: req.userId,
+                user_id: id,
+                user_name: name,
                 title,
                 body,
             });
@@ -32,6 +34,7 @@ router.post(
                 post: {
                     id: newPost.id,
                     user_id: newPost.user_id,
+                    user_name: newPost.user_name,
                     title: newPost.title,
                     body: newPost.body,
                 },
