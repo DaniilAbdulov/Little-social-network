@@ -21,7 +21,7 @@ export const PostsModule = {
                     title: post.title,
                     body: post.body,
                 });
-                dispatch("getAllPosts"); // вызываем getAllPosts после успешного создания нового поста
+                dispatch("getAllPosts");
             } catch (error) {
                 console.log(error);
             }
