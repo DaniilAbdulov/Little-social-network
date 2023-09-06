@@ -17,7 +17,6 @@ export const PostsModule = {
         async createPostInDB({ dispatch }, post) {
             try {
                 await axios.post("/api/post/newpost", {
-                    id: Date.now(),
                     title: post.title,
                     body: post.body,
                 });
