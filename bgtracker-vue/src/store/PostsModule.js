@@ -16,10 +16,11 @@ export const PostsModule = {
     actions: {
         async createPostInDB({ dispatch }, post) {
             try {
-                await axios.post("/api/post/newpost", {
+                const response = await axios.post("/api/post/newpost", {
                     title: post.title,
                     body: post.body,
                 });
+                console.log(response);
                 dispatch("getAllPosts");
             } catch (error) {
                 console.log(error);
