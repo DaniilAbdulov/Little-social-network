@@ -76,13 +76,14 @@ export const LogSignModule = {
         },
         async RegistrationUser(
             { commit, state },
-            { username, password, email }
+            { username, password, email, repeatpassword }
         ) {
             try {
                 const response = await axios.post("/api/auth/register", {
                     username,
                     password,
                     email,
+                    repeatpassword,
                 });
                 const { token } = response.data;
                 const newUser = response.data.user;

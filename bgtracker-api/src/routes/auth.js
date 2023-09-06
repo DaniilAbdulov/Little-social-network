@@ -65,7 +65,7 @@ router.post(
         if (!username || !email || !password) {
             return res.status(400).json({ message: "All fields are required" });
         }
-        if (password !== repeatpassword) {
+        if (password != repeatpassword) {
             return res
                 .status(400)
                 .json({ message: "Please check your password" });
