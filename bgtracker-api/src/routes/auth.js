@@ -75,6 +75,7 @@ router.post(
             const existingUser = await User.query()
                 .where({ username })
                 .orWhere({ email })
+                .skipUndefined()
                 .first();
 
             let errorMessage = "";

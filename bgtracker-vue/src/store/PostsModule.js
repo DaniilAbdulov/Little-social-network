@@ -20,7 +20,6 @@ export const PostsModule = {
                     title: post.title,
                     body: post.body,
                 });
-                console.log(response);
                 dispatch("getAllPosts");
             } catch (error) {
                 console.log(error);
