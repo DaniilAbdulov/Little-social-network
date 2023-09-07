@@ -1,7 +1,9 @@
 <template>
-    <div>
+    <div class="app">
         <navigation-bar />
-        <router-view></router-view>
+        <div class="container">
+            <router-view></router-view>
+        </div>
     </div>
 </template>
 
@@ -22,5 +24,9 @@ export default {
 * {
     margin: 0;
     padding: 0;
+}
+.container {
+    max-width: 90%;
+    margin: 0 auto;
 }
 </style>

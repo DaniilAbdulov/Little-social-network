@@ -3,8 +3,7 @@
         <div class="content" v-if="userIsAuthenticated">
             <h1>Hello</h1>
         </div>
-        <div v-if="!userIsAuthenticated">Please login to view the content.</div>
-        <posts-list></posts-list>
+        <div v-if="!userIsAuthenticated">Please login to create posts.</div>
         <div>
             <form @submit.prevent="sendNewPost">
                 <input type="text" placeholder="title" v-model="post.title" />
@@ -12,6 +11,7 @@
                 <button type="submit">create</button>
             </form>
         </div>
+        <posts-list></posts-list>
     </div>
 </template>
 

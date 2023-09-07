@@ -10,7 +10,7 @@ router.get(
     "/allposts",
     asyncHandler(async (req, res) => {
         const allPosts = await Post.query()
-            .select("posts.title", "posts.body", "posts.created_at")
+            .select("posts.id", "posts.title", "posts.body", "posts.created_at")
             .joinRelated("user", { alias: "users" })
             .withGraphFetched("user(selectUsername)");
         res.status(200).json({

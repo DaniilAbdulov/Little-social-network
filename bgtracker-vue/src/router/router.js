@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import LogIn from "@/views/LogIn";
 import SignUp from "@/views/SignUp";
 import HomePage from "@/views/HomePage";
+import PostIdPage from "@/views/PostIdPage";
 
 const routes = [
     {
@@ -15,6 +16,10 @@ const routes = [
     {
         path: "/signup",
         component: SignUp,
+    },
+    {
+        path: "/post/:id/comments",
+        component: PostIdPage,
     },
 ];
 
