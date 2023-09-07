@@ -9,7 +9,10 @@ let router = express.Router();
 router.get(
     "/allposts",
     asyncHandler(async (req, res) => {
-        const allPosts = await Post.query();
+        const allPosts = await Post.query()
+            .select("posts.title", "posts.body", "posts.created_at")
+            .joinRelated("user", { alias: "users" })
+            .withGraphFetched("user(selectUsername)");
         res.status(200).json({
             posts: allPosts,
             message: "All posts retrieved successfully",
@@ -22,13 +25,14 @@ router.post(
     authenticate,
     asyncHandler(async (req, res) => {
         const { title, body } = req.body;
-        const { id } = req.user;
         try {
-            const newPost = await Post.query().insert({
-                user_id: id,
-                title,
-                body,
-            });
+            const newPost = await Post.query()
+                .insert({
+                    user_id: req.userId,
+                    title,
+                    body,
+                })
+                .skipUndefined();
             res.status(201).json({
                 post: {
                     id: newPost.id,

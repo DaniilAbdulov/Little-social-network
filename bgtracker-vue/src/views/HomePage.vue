@@ -4,14 +4,7 @@
             <h1>Hello</h1>
         </div>
         <div v-if="!userIsAuthenticated">Please login to view the content.</div>
-        <div class="posts">
-            <div class="posts__container">
-                <div class="post" v-for="post in posts" :key="post.id">
-                    <div class="post__title">{{ post.title }}</div>
-                    <div class="post__body">{{ post.body }}</div>
-                </div>
-            </div>
-        </div>
+        <posts-list></posts-list>
         <div>
             <form @submit.prevent="sendNewPost">
                 <input type="text" placeholder="title" v-model="post.title" />
@@ -23,8 +16,13 @@
 </template>
 
 <script>
-import { mapGetters, mapActions, mapState } from "vuex";
+import { mapGetters, mapActions } from "vuex";
+import PostsList from "@/components/PostsList.vue";
+
 export default {
+    components: {
+        PostsList,
+    },
     data() {
         return {
             post: {
@@ -45,20 +43,13 @@ export default {
         },
         ...mapActions("posts", {
             createPostInDB: "createPostInDB",
-            getAllPosts: "getAllPosts",
         }),
     },
     computed: {
-        ...mapState("posts", {
-            posts: (state) => state.posts,
-        }),
         ...mapGetters("lognsig", {
             adminIsAuthenticated: "adminIsAuthenticated",
             userIsAuthenticated: "userIsAuthenticated",
         }),
-    },
-    mounted() {
-        this.getAllPosts();
     },
 };
 </script>

@@ -1,4 +1,4 @@
-exports.seed = async (knex) => {
+async function seed(knex) {
     return knex("posts")
         .del()
         .then(() => {
@@ -11,4 +11,5 @@ exports.seed = async (knex) => {
                 },
             ]);
         });
-};
+}
+module.exports = { seed };

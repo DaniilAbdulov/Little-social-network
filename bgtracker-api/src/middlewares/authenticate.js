@@ -13,10 +13,7 @@ module.exports = asyncHandler(async function (req, res, next) {
 
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        req.user = {
-            id: decoded.id,
-            name: decoded.name,
-        };
+        req.userId = decoded.id;
         next();
     } catch (err) {
         res.status(401).json({ message: "Invalid token" });

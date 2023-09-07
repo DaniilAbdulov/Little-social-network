@@ -1,3 +1,4 @@
+const { Model } = require("objection");
 const BaseModel = require("./BaseModel");
 
 class Post extends BaseModel {
@@ -13,6 +14,20 @@ class Post extends BaseModel {
                 user_id: { type: "integer" },
                 title: { type: "string" },
                 body: { type: "string" },
+            },
+        };
+    }
+
+    static get relationMappings() {
+        const User = require("./User");
+        return {
+            user: {
+                relation: Model.BelongsToOneRelation,
+                modelClass: User,
+                join: {
+                    from: "posts.user_id",
+                    to: "users.id",
+                },
             },
         };
     }
