@@ -9,6 +9,7 @@ class User extends Password(BaseModel) {
 
     static get relationMappings() {
         const Post = require("./Post");
+        const Comments = require("./Comments");
         return {
             posts: {
                 relation: Model.HasManyRelation,
@@ -16,6 +17,14 @@ class User extends Password(BaseModel) {
                 join: {
                     from: "users.id",
                     to: "posts.user_id",
+                },
+            },
+            comments: {
+                relation: Model.HasManyRelation,
+                modelClass: Comments,
+                join: {
+                    from: "users.id",
+                    to: "comments.user_id",
                 },
             },
         };

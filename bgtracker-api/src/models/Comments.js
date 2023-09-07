@@ -1,18 +1,18 @@
 const { Model } = require("objection");
 const BaseModel = require("./BaseModel");
 
-class Post extends BaseModel {
+class Comments extends BaseModel {
     static get tableName() {
-        return "posts";
+        return "comments";
     }
 
     static get jsonSchema() {
         return {
             type: "object",
-            required: ["user_id", "title", "body"],
+            required: ["user_id", "post_id", "body"],
             properties: {
                 user_id: { type: "integer" },
-                title: { type: "string" },
+                post_id: { type: "integer" },
                 body: { type: "string" },
             },
         };
@@ -20,26 +20,26 @@ class Post extends BaseModel {
 
     static get relationMappings() {
         const User = require("./User");
-        const Comments = require("./Comments");
+        const Post = require("./Post");
         return {
             user: {
                 relation: Model.BelongsToOneRelation,
                 modelClass: User,
                 join: {
-                    from: "posts.user_id",
+                    from: "comments.user_id",
                     to: "users.id",
                 },
             },
-            comments: {
-                relation: Model.HasManyRelation,
-                modelClass: Comments,
+            post: {
+                relation: Model.BelongsToOneRelation,
+                modelClass: Post,
                 join: {
-                    from: "posts.id",
-                    to: "comments.post_id",
+                    from: "comments.post_id",
+                    to: "post.id",
                 },
             },
         };
     }
 }
 
-module.exports = Post;
+module.exports = Comments;
