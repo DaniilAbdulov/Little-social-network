@@ -17,6 +17,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/api/auth", require("./routes/auth"));
 app.use("/api/post", require("./routes/post"));
 app.use("/api/comment", require("./routes/comments"));
+app.use("/api/todos", require("./routes/todos"));
 
 app.get("/", (req, res) => {
     res.sendFile(

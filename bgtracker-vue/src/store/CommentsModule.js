@@ -6,11 +6,15 @@ export const CommentsModule = {
             post_id: "",
         },
         comments: [],
+        isLoading: false,
     }),
     getters: {},
     mutations: {
         SET_COMMENTS_OF_POST(state, comments) {
             state.comments = comments;
+        },
+        SET_LOADING(state, loading) {
+            state.isLoading = loading;
         },
     },
     actions: {
@@ -27,12 +31,16 @@ export const CommentsModule = {
         },
         async getCommentsOfPost({ commit }, postId) {
             try {
+                commit("SET_LOADING", true);
                 const response = await axios.get(
                     `/api/comment/commentsofpost/${postId}`
                 );
                 commit("SET_COMMENTS_OF_POST", response.data.comments);
+                console.log(response.data.comments);
+                commit("SET_LOADING", false);
             } catch (error) {
                 console.log(error);
+                commit("SET_LOADING", false);
             }
         },
     },

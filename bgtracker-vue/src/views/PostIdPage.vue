@@ -11,30 +11,34 @@
                     type="text"
                     v-model="comment.body"
                     placeholder="comment"
+                    required
                 />
                 <button type="submit">create</button>
             </form>
         </div>
-        <div v-if="comments.length > 0">
-            <div class="comments" v-for="com in comments" :key="com.id">
-                <div class="comment">
-                    <div class="comment__container">
-                        <div class="comment__data">
-                            <div class="comment__author">
-                                @{{ com.username }}
+        <div v-if="isLoading">Loading comments...</div>
+        <div v-else>
+            <div v-if="comments.length > 0">
+                <div class="comments" v-for="com in comments" :key="com.id">
+                    <div class="comment">
+                        <div class="comment__container">
+                            <div class="comment__data">
+                                <div class="comment__author">
+                                    @{{ com.username }}
+                                </div>
+                                <div class="comment__time">
+                                    {{ com.created_at }}
+                                </div>
                             </div>
-                            <div class="comment__time">
-                                {{ com.created_at }}
+                            <div class="comment__body">
+                                {{ com.body }}
                             </div>
-                        </div>
-                        <div class="comment__body">
-                            {{ com.body }}
                         </div>
                     </div>
                 </div>
             </div>
+            <div v-else>No comments</div>
         </div>
-        <div v-else>No comments</div>
     </div>
 </template>
 
@@ -69,6 +73,7 @@ export default {
     computed: {
         ...mapState("comments", {
             comments: (state) => state.comments,
+            isLoading: (state) => state.isLoading,
         }),
     },
     mounted() {
