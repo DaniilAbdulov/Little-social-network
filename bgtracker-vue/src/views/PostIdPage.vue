@@ -15,21 +15,26 @@
                 <button type="submit">create</button>
             </form>
         </div>
-        <div>
+        <div v-if="comments.length > 0">
             <div class="comments" v-for="com in comments" :key="com.id">
                 <div class="comment">
                     <div class="comment__container">
-                        <div class="comment__author">@{{ com.username }}</div>
+                        <div class="comment__data">
+                            <div class="comment__author">
+                                @{{ com.username }}
+                            </div>
+                            <div class="comment__time">
+                                {{ com.created_at }}
+                            </div>
+                        </div>
                         <div class="comment__body">
                             {{ com.body }}
-                        </div>
-                        <div class="comment__time">
-                            {{ com.created_at }}
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        <div v-else>No comments</div>
     </div>
 </template>
 
@@ -58,7 +63,7 @@ export default {
         },
         ...mapActions("comments", {
             createCommentInDB: "createCommentInDB",
-            getAllcomments: "getAllcomments",
+            getCommentsOfPost: "getCommentsOfPost",
         }),
     },
     computed: {
@@ -67,7 +72,7 @@ export default {
         }),
     },
     mounted() {
-        this.getAllcomments(this.postId);
+        this.getCommentsOfPost(this.postId);
     },
 };
 </script>
@@ -85,5 +90,9 @@ export default {
     top: 0;
     left: 0;
     transform: translate(-0%, -0%);
+}
+.comment__data {
+    display: flex;
+    gap: 10px;
 }
 </style>

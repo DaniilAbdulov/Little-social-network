@@ -28,7 +28,6 @@ export const PostsModule = {
         async getAllPosts({ commit }) {
             try {
                 const response = await axios.get("api/post/allposts");
-                console.log(response.data.posts);
                 commit("SET_ALL_POSTS", response.data.posts);
             } catch (error) {
                 console.log(error);
