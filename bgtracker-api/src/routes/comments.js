@@ -6,11 +6,26 @@ const Comments = require("../models/Comments");
 let router = express.Router();
 
 router.get(
-    "/commentsofpost",
+    "/commentsofpost/:postId",
     asyncHandler(async (req, res) => {
-        const allComments = await Comments.query();
+        const postId = parseInt(req.params.postId, 10);
+
+        if (isNaN(postId)) {
+            res.status(400).json({ message: "Invalid post id" });
+            return;
+        }
+        const commentsOfPost = await Comments.query()
+            .select(
+                "users.username",
+                "comments.id",
+                "comments.body",
+                "comments.created_at"
+            )
+            .join("users", "users.id", "comments.user_id")
+            .where("comments.post_id", postId);
+
         res.status(200).json({
-            comments: allComments,
+            comments: commentsOfPost,
             message: "All comments retrieved successfully",
         });
     })
@@ -20,11 +35,17 @@ router.post(
     "/newcomment",
     authenticate,
     asyncHandler(async (req, res) => {
+        const postId = parseInt(req.body.post_id, 10);
+
+        if (isNaN(postId)) {
+            res.status(400).json({ message: "Invalid post id" });
+            return;
+        }
         try {
             const newComment = await Comments.query()
                 .insert({
                     user_id: req.userId,
-                    post_id: +req.body.post_id,
+                    post_id: postId,
                     body: req.body.body,
                 })
                 .skipUndefined();

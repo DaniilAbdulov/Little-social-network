@@ -17,7 +17,17 @@
         </div>
         <div>
             <div class="comments" v-for="com in comments" :key="com.id">
-                {{ com }}
+                <div class="comment">
+                    <div class="comment__container">
+                        <div class="comment__author">@{{ com.username }}</div>
+                        <div class="comment__body">
+                            {{ com.body }}
+                        </div>
+                        <div class="comment__time">
+                            {{ com.created_at }}
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -57,7 +67,7 @@ export default {
         }),
     },
     mounted() {
-        this.getAllcomments();
+        this.getAllcomments(this.postId);
     },
 };
 </script>

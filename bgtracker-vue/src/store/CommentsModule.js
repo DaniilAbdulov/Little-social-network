@@ -20,14 +20,16 @@ export const CommentsModule = {
                     body: comment.body,
                     post_id: comment.post_id,
                 });
-                dispatch("getAllcomments");
+                dispatch("getAllcomments", comment.post_id);
             } catch (error) {
                 console.log(error);
             }
         },
-        async getAllcomments({ commit }) {
+        async getAllcomments({ commit }, postId) {
             try {
-                const response = await axios.get("api/comment/commentsofpost");
+                const response = await axios.get(
+                    `/api/comment/commentsofpost/${postId}`
+                );
                 commit("SET_ALL_COMMENTS", response.data.comments);
             } catch (error) {
                 console.log(error);
