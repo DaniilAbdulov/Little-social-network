@@ -65,5 +65,29 @@ router.post(
         }
     })
 );
+router.delete(
+    "/deletecomment",
+    authenticate,
+    asyncHandler(async (req, res) => {
+        const { comment_id } = req.body;
+        try {
+            const deletedComment = await Comments.query().deleteById(
+                comment_id
+            );
+            if (deletedComment) {
+                res.status(200).json({
+                    message: "Comment successfully deleted",
+                });
+            } else {
+                res.status(404).json({
+                    message: "Commnent not found",
+                });
+            }
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ message: "Failed to delete comment" });
+        }
+    })
+);
 
 module.exports = router;

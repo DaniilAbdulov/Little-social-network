@@ -16,35 +16,15 @@
                 <button type="submit">create</button>
             </form>
         </div>
-        <div v-if="isLoading">Loading comments...</div>
-        <div v-else>
-            <div v-if="comments.length > 0">
-                <div class="comments" v-for="com in comments" :key="com.id">
-                    <div class="comment">
-                        <div class="comment__container">
-                            <div class="comment__data">
-                                <div class="comment__author">
-                                    @{{ com.username }}
-                                </div>
-                                <div class="comment__time">
-                                    {{ com.created_at }}
-                                </div>
-                            </div>
-                            <div class="comment__body">
-                                {{ com.body }}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div v-else>No comments</div>
-        </div>
+        <comments-list :post-id="postId"></comments-list>
     </div>
 </template>
 
 <script>
-import { mapActions, mapState } from "vuex";
+import { mapActions } from "vuex";
+import CommentsList from "../components/CommentsList.vue";
 export default {
+    components: { CommentsList },
     data() {
         return {
             comment: {
@@ -67,17 +47,7 @@ export default {
         },
         ...mapActions("comments", {
             createCommentInDB: "createCommentInDB",
-            getCommentsOfPost: "getCommentsOfPost",
         }),
-    },
-    computed: {
-        ...mapState("comments", {
-            comments: (state) => state.comments,
-            isLoading: (state) => state.isLoading,
-        }),
-    },
-    mounted() {
-        this.getCommentsOfPost(this.postId);
     },
 };
 </script>

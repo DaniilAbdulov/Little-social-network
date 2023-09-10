@@ -42,6 +42,16 @@ export const CommentsModule = {
                 commit("SET_LOADING", false);
             }
         },
+        async deleteComment({ dispatch }, { com, postId }) {
+            try {
+                await axios.delete("/api/comment/deletecomment", {
+                    data: { comment_id: com.id },
+                });
+                dispatch("getCommentsOfPost", postId);
+            } catch (error) {
+                console.log(error);
+            }
+        },
     },
     namespaced: true,
 };
