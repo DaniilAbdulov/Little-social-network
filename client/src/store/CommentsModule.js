@@ -36,7 +36,6 @@ export const CommentsModule = {
                     `/api/comment/commentsofpost/${postId}`
                 );
                 commit("SET_COMMENTS_OF_POST", response.data.comments);
-                console.log(response.data.comments);
                 commit("SET_LOADING", false);
             } catch (error) {
                 console.log(error);

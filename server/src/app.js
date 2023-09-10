@@ -20,9 +20,7 @@ app.use("/api/comment", require("./routes/comments"));
 app.use("/api/todos", require("./routes/todos"));
 
 app.get("/", (req, res) => {
-    res.sendFile(
-        join(__dirname, "..", "..", "bgtracker-vue", "public", "index.html")
-    );
+    res.sendFile(join(__dirname, "..", "..", "client", "public", "index.html"));
 });
 app.listen(process.env.PORT, () =>
     console.log(`Running on ${process.env.PORT}`)
