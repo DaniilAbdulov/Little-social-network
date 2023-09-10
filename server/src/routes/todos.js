@@ -13,7 +13,8 @@ router.get(
         const todosOfUser = await Todos.query()
             .select("todos.id", "todos.body", "todos.completed")
             .join("users", "users.id", "todos.user_id")
-            .where("todos.user_id", user_id);
+            .where("todos.user_id", user_id)
+            .orderBy("todos.created_at", "desc");
 
         res.status(200).json({
             todos: todosOfUser,

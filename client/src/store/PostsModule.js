@@ -34,6 +34,17 @@ export const PostsModule = {
                 console.log(error);
             }
         },
+        async deletePost({ dispatch }, post) {
+            try {
+                await axios.delete("/api/post/deletepost", {
+                    data: { post_id: post.id },
+                });
+
+                dispatch("getAllPosts");
+            } catch (error) {
+                console.log(error);
+            }
+        },
     },
     namespaced: true,
 };

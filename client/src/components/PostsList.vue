@@ -18,6 +18,9 @@
                         </button>
                         <p>{{ post.comment_count }}</p>
                     </div>
+                    <div class="post__delete">
+                        <button @click="deletePost(post)">Delete</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -38,7 +41,7 @@ export default {
         async toggleLike(post) {
             await this.toggleLikeOnPost(post);
         },
-        ...mapActions("posts", ["getAllPosts"]),
+        ...mapActions("posts", ["getAllPosts", "deletePost"]),
         ...mapActions("likes", ["toggleLikeOnPost"]),
         showPostComments(post) {
             this.$router.push({

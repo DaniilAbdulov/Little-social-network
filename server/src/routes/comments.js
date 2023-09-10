@@ -22,7 +22,8 @@ router.get(
                 "comments.created_at"
             )
             .join("users", "users.id", "comments.user_id")
-            .where("comments.post_id", postId);
+            .where("comments.post_id", postId)
+            .orderBy("comments.created_at", "desc");
 
         res.status(200).json({
             comments: commentsOfPost,

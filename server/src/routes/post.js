@@ -2,7 +2,6 @@ const express = require("express");
 const asyncHandler = require("../middlewares/asyncHandler");
 const authenticate = require("../middlewares/authenticate");
 const Post = require("../models/Post");
-const Likes = require("../models/Likes");
 
 let router = express.Router();
 
@@ -21,7 +20,8 @@ router.get(
                     builder.select("username");
                 },
             })
-            .groupBy("posts.id", "users.id") // Group by 'users.id' instead of 'users.username' to handle duplicate usernames correctly.
+            .groupBy("posts.id", "users.id")
+            .orderBy("posts.created_at", "desc") // Group by 'users.id' instead of 'users.username' to handle duplicate usernames correctly.
             .select((builder) => {
                 // Add comment count subquery
                 builder
@@ -70,6 +70,29 @@ router.post(
         } catch (error) {
             console.error(error);
             res.status(500).json({ message: "Server error" });
+        }
+    })
+);
+router.delete(
+    "/deletepost",
+    authenticate,
+    asyncHandler(async (req, res) => {
+        const { post_id } = req.body;
+        try {
+            const deletedPost = await Post.query().deleteById(post_id);
+
+            if (deletedPost) {
+                res.status(200).json({
+                    message: "Post successfully deleted",
+                });
+            } else {
+                res.status(404).json({
+                    message: "Post not found",
+                });
+            }
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ message: "Failed to delete Post" });
         }
     })
 );

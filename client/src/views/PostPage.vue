@@ -1,10 +1,10 @@
 <template>
     <div>
-        <div class="content" v-if="userIsAuthenticated">
-            <h1>Hello</h1>
+        <div class="content" v-if="userIsAuthenticated"></div>
+        <div v-if="!userIsAuthenticated || !adminIsAuthenticated">
+            Please login to create posts.
         </div>
-        <div v-if="!userIsAuthenticated">Please login to create posts.</div>
-        <div>
+        <div v-else>
             <form @submit.prevent="sendNewPost">
                 <input
                     type="text"
