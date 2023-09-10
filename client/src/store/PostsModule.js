@@ -1,4 +1,5 @@
 import axios from "axios";
+
 export const PostsModule = {
     state: () => ({
         post: {
@@ -16,7 +17,7 @@ export const PostsModule = {
     actions: {
         async createPostInDB({ dispatch }, post) {
             try {
-                const response = await axios.post("/api/post/newpost", {
+                await axios.post("/api/post/newpost", {
                     title: post.title,
                     body: post.body,
                 });
@@ -27,7 +28,7 @@ export const PostsModule = {
         },
         async getAllPosts({ commit }) {
             try {
-                const response = await axios.get("api/post/allposts");
+                const response = await axios.get("/api/post/allposts");
                 commit("SET_ALL_POSTS", response.data.posts);
             } catch (error) {
                 console.log(error);

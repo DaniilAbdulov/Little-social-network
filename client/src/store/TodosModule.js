@@ -16,15 +16,19 @@ export const TodosModule = {
         SET_LOADING(state, loading) {
             state.isLoading = loading;
         },
+        CLEAR_TODO_BODY(state) {
+            state.todo.body = "";
+        },
     },
     actions: {
-        async createTodoInDB({ dispatch }, todo) {
+        async createTodoInDB({ commit, dispatch }, todo) {
             try {
                 await axios.post("/api/todos/newtodo", {
                     body: todo.body,
                     completed: todo.completed,
                     user_id: todo.user_id,
                 });
+                commit("CLEAR_TODO_BODY");
                 dispatch("getTodosOfUser");
             } catch (error) {
                 console.log(error);
@@ -39,6 +43,28 @@ export const TodosModule = {
             } catch (error) {
                 console.log(error);
                 commit("SET_LOADING", false);
+            }
+        },
+        async deleteTodo({ dispatch }, todo) {
+            try {
+                await axios.delete("/api/todos/deletetodo", {
+                    data: { todo_id: todo.id },
+                });
+
+                dispatch("getTodosOfUser");
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        async changeComplete({ dispatch }, todo) {
+            try {
+                await axios.patch("/api/todos/changecomplete", {
+                    data: { todo_id: todo.id },
+                });
+
+                dispatch("getTodosOfUser");
+            } catch (error) {
+                console.log(error);
             }
         },
     },

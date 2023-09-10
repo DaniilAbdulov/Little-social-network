@@ -21,7 +21,17 @@
                 <button type="submit">create</button>
             </form>
         </div>
-        <posts-list></posts-list>
+        <div>
+            <div class="search">
+                <input
+                    type="text"
+                    name="search"
+                    placeholder="search"
+                    v-model="searchQuery"
+                />
+            </div>
+        </div>
+        <posts-list :searchQuery="searchQuery"></posts-list>
     </div>
 </template>
 
@@ -39,6 +49,7 @@ export default {
                 title: "",
                 body: "",
             },
+            searchQuery: "",
         };
     },
     methods: {

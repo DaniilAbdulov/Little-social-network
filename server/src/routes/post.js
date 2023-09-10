@@ -2,6 +2,7 @@ const express = require("express");
 const asyncHandler = require("../middlewares/asyncHandler");
 const authenticate = require("../middlewares/authenticate");
 const Post = require("../models/Post");
+const Likes = require("../models/Likes");
 
 let router = express.Router();
 
@@ -9,17 +10,41 @@ let router = express.Router();
 router.get(
     "/allposts",
     asyncHandler(async (req, res) => {
+        const userId = req.userId;
         const allPosts = await Post.query()
             .select("posts.id", "posts.title", "posts.body", "posts.created_at")
-            .joinRelated("user", { alias: "users" })
-            .withGraphFetched("user(selectUsername)");
+            .leftJoinRelated("comments")
+            .joinRelated("user as users") // Make sure to alias "user" to "users" to match the given SQL syntax.
+            .withGraphFetched("user(selectUsername)")
+            .modifiers({
+                selectUsername(builder) {
+                    builder.select("username");
+                },
+            })
+            .groupBy("posts.id", "users.id") // Group by 'users.id' instead of 'users.username' to handle duplicate usernames correctly.
+            .select((builder) => {
+                // Add comment count subquery
+                builder
+                    .count("comments.id as comment_count")
+                    .from("comments")
+                    .whereRaw("comments.post_id = posts.id")
+                    .as("comment_count");
+            })
+            .select((builder) => {
+                // Add likes count subquery
+                builder
+                    .count("likes.id as likes_count")
+                    .from("likes")
+                    .whereRaw("likes.post_id = posts.id")
+                    .as("likes_count");
+            });
+
         res.status(200).json({
             posts: allPosts,
             message: "All posts retrieved successfully",
         });
     })
 );
-
 router.post(
     "/newpost",
     authenticate,

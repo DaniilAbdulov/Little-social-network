@@ -9,7 +9,11 @@
         </div>
         <div>
             <div class="todos" v-for="todo in todos" :key="todo.id">
-                {{ todo }}
+                <button @click="changeComplete(todo)" class="todo__completed">
+                    {{ todo.completed }}
+                </button>
+                <div class="todo__content">{{ todo.body }}</div>
+                <button @click="deleteTodo(todo)">delte todo</button>
             </div>
         </div>
     </div>
@@ -29,11 +33,13 @@ export default {
     methods: {
         createToDo() {
             this.createTodoInDB(this.todo);
-            this.body = "";
+            this.todo.body = "";
         },
         ...mapActions("todos", {
             createTodoInDB: "createTodoInDB",
+            deleteTodo: "deleteTodo",
             getTodosOfUser: "getTodosOfUser",
+            changeComplete: "changeComplete",
         }),
     },
     computed: {
