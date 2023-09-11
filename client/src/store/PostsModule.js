@@ -8,9 +8,9 @@ export const PostsModule = {
         },
         posts: [],
         errorMessage: "",
-        // postPage: 1,
-        // postLimit: 3,
-        // totalPage: 0,
+        postPage: 1,
+        postLimit: 3,
+        totalPage: 0,
     }),
     getters: {},
     mutations: {
@@ -42,10 +42,15 @@ export const PostsModule = {
                 console.log(error);
             }
         },
-        async getAllPosts({ commit }, state) {
+        async getAllPosts({ commit }) {
+            const postPage = this.state.posts.postPage;
+            const postLimit = this.state.posts.postLimit;
             try {
-                const response = await axios.get("/api/post/allposts");
+                const response = await axios.get("/api/post/allposts", {
+                    params: { postPage: postPage, postLimit: postLimit },
+                });
                 // const totalCount = response.data.posts_length;
+                // console.log(totalCount);
                 commit("SET_ALL_POSTS", response.data.posts);
             } catch (error) {
                 console.log(error);

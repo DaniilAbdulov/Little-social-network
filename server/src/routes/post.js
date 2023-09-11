@@ -8,7 +8,10 @@ let router = express.Router();
 router.get(
     "/allposts",
     asyncHandler(async (req, res) => {
-        const userId = req.userId;
+        const { postPage, postLimit } = req.query;
+        console.log(postPage);
+        console.log(postLimit);
+
         const allPosts = await Post.query()
             .select(
                 "posts.id",
@@ -27,6 +30,8 @@ router.get(
             })
             .groupBy("posts.id", "users.id")
             .orderBy("posts.created_at", "desc")
+            .limit(postLimit)
+            .offset(postPage)
             .select((builder) => {
                 builder
                     .count("comments.id as comment_count")
