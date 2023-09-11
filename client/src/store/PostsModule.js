@@ -8,6 +8,9 @@ export const PostsModule = {
         },
         posts: [],
         errorMessage: "",
+        // postPage: 1,
+        // postLimit: 3,
+        // totalPage: 0,
     }),
     getters: {},
     mutations: {
@@ -17,6 +20,15 @@ export const PostsModule = {
         SET_ERROR_MESSAGE(state, message) {
             state.errorMessage = message;
         },
+        // setPostPage(state, postPage) {
+        //     state.postPage = postPage;
+        // },
+        // setTotalPage(state, totalPage) {
+        //     state.totalPage = totalPage;
+        // },
+        // INCREMENT_POST_PAGE(state) {
+        //     state.postPage += 1;
+        // },
     },
     actions: {
         async createPostInDB({ dispatch }, post) {
@@ -30,9 +42,10 @@ export const PostsModule = {
                 console.log(error);
             }
         },
-        async getAllPosts({ commit }) {
+        async getAllPosts({ commit }, state) {
             try {
                 const response = await axios.get("/api/post/allposts");
+                // const totalCount = response.data.posts_length;
                 commit("SET_ALL_POSTS", response.data.posts);
             } catch (error) {
                 console.log(error);

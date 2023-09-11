@@ -1,6 +1,6 @@
 <template>
     <div>
-        <p>{{ errorMessage }}</p>
+        <p style="color: red; font-size: 20px">!{{ errorMessage }}</p>
         <div v-if="isLoading">Loading comments...</div>
         <div v-else>
             <div v-if="comments.length > 0">

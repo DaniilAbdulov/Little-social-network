@@ -47,6 +47,7 @@ router.get(
 
         res.status(200).json({
             posts: allPosts,
+            posts_length: allPosts.length,
             message: "All posts retrieved successfully",
         });
     })

@@ -22,7 +22,7 @@ export const CommentsModule = {
         },
     },
     actions: {
-        async createCommentInDB({ dispatch }, comment) {
+        async createCommentInDB({ commit, dispatch }, comment) {
             try {
                 await axios.post("/api/comment/newcomment", {
                     body: comment.body,
@@ -30,7 +30,7 @@ export const CommentsModule = {
                 });
                 dispatch("getCommentsOfPost", comment.post_id);
             } catch (error) {
-                console.log(error);
+                commit("SET_ERROR_MESSAGE", error.response.data.message);
             }
         },
         async getCommentsOfPost({ commit }, postId) {
@@ -42,7 +42,7 @@ export const CommentsModule = {
                 commit("SET_COMMENTS_OF_POST", response.data.comments);
                 commit("SET_LOADING", false);
             } catch (error) {
-                console.log(error);
+                commit("SET_ERROR_MESSAGE", error.response.data.message);
                 commit("SET_LOADING", false);
             }
         },
