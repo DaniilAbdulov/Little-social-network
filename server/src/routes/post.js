@@ -6,12 +6,10 @@ const Post = require("../models/Post");
 let router = express.Router();
 
 router.get(
-    "/allposts",
+    "/posts",
     asyncHandler(async (req, res) => {
+        const postLength = await Post.query().count("id").first();
         const { postPage, postLimit } = req.query;
-        console.log(postPage);
-        console.log(postLimit);
-
         const allPosts = await Post.query()
             .select(
                 "posts.id",
@@ -29,7 +27,6 @@ router.get(
                 },
             })
             .groupBy("posts.id", "users.id")
-            .orderBy("posts.created_at", "desc")
             .limit(postLimit)
             .offset(postPage)
             .select((builder) => {
@@ -49,7 +46,7 @@ router.get(
 
         res.status(200).json({
             posts: allPosts,
-            posts_length: allPosts.length,
+            posts_length: +postLength.count,
             message: "All posts retrieved successfully",
         });
     })

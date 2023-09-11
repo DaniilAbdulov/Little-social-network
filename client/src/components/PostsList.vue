@@ -1,7 +1,7 @@
 <template>
     <div>
-        <p>{{ searchQuery }}</p>
-        <p>{{ errorMessage }}</p>
+        <p>{{ postsCount }}</p>
+        <p>{{ postPage }}</p>
         <div class="posts">
             <div class="posts__container">
                 <div class="post" v-for="post in searchPosts" :key="post.id">
@@ -25,6 +25,14 @@
                 </div>
             </div>
         </div>
+        <div
+            v-intersection="getMorePosts"
+            class="observer"
+            v-if="postsCount >= postPage"
+        ></div>
+        <!-- <button @click="getMorePosts" v-if="postsCount >= postPage">
+            getMorePosts
+        </button> -->
     </div>
 </template>
 
@@ -42,7 +50,7 @@ export default {
         async toggleLike(post) {
             await this.toggleLikeOnPost(post);
         },
-        ...mapActions("posts", ["getAllPosts", "deletePost"]),
+        ...mapActions("posts", ["getPosts", "deletePost", "getMorePosts"]),
         ...mapActions("likes", ["toggleLikeOnPost"]),
         showPostComments(post) {
             this.$router.push({
@@ -54,6 +62,8 @@ export default {
     computed: {
         ...mapState("posts", {
             posts: (state) => state.posts,
+            postsCount: (state) => state.postsCount,
+            postPage: (state) => state.postPage,
             errorMessage: (state) => state.errorMessage,
         }),
         searchPosts() {
@@ -72,7 +82,7 @@ export default {
         },
     },
     mounted() {
-        this.getAllPosts();
+        this.getPosts();
     },
 };
 </script>
@@ -104,5 +114,9 @@ export default {
         display: flex;
         gap: 5px;
     }
+}
+.observer {
+    height: 30px;
+    border: 1px solid black;
 }
 </style>

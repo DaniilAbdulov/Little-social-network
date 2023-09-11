@@ -8,9 +8,9 @@ export const PostsModule = {
         },
         posts: [],
         errorMessage: "",
-        postPage: 1,
+        postPage: 0,
         postLimit: 3,
-        totalPage: 0,
+        postsCount: 0,
     }),
     getters: {},
     mutations: {
@@ -20,15 +20,12 @@ export const PostsModule = {
         SET_ERROR_MESSAGE(state, message) {
             state.errorMessage = message;
         },
-        // setPostPage(state, postPage) {
-        //     state.postPage = postPage;
-        // },
-        // setTotalPage(state, totalPage) {
-        //     state.totalPage = totalPage;
-        // },
-        // INCREMENT_POST_PAGE(state) {
-        //     state.postPage += 1;
-        // },
+        INCREMENT_POST_PAGE(state) {
+            state.postPage += state.postLimit;
+        },
+        SET_ALL_POSTS_COUNT(state, count) {
+            state.postsCount = count;
+        },
     },
     actions: {
         async createPostInDB({ dispatch }, post) {
@@ -42,16 +39,32 @@ export const PostsModule = {
                 console.log(error);
             }
         },
-        async getAllPosts({ commit }) {
+        async getPosts({ commit }) {
             const postPage = this.state.posts.postPage;
             const postLimit = this.state.posts.postLimit;
             try {
-                const response = await axios.get("/api/post/allposts", {
+                const response = await axios.get("/api/post/posts", {
                     params: { postPage: postPage, postLimit: postLimit },
                 });
-                // const totalCount = response.data.posts_length;
-                // console.log(totalCount);
                 commit("SET_ALL_POSTS", response.data.posts);
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        async getMorePosts({ commit }) {
+            console.log("getMorePosts is still working");
+            commit("INCREMENT_POST_PAGE");
+            const postPage = this.state.posts.postPage;
+            const postLimit = this.state.posts.postLimit;
+            try {
+                const response = await axios.get("/api/post/posts", {
+                    params: { postPage: postPage, postLimit: postLimit },
+                });
+                commit("SET_ALL_POSTS_COUNT", response.data.posts_length);
+                commit("SET_ALL_POSTS", [
+                    ...this.state.posts.posts,
+                    ...response.data.posts,
+                ]);
             } catch (error) {
                 console.log(error);
             }
