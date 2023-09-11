@@ -7,6 +7,7 @@ export const CommentsModule = {
         },
         comments: [],
         isLoading: false,
+        errorMessage: "",
     }),
     getters: {},
     mutations: {
@@ -15,6 +16,9 @@ export const CommentsModule = {
         },
         SET_LOADING(state, loading) {
             state.isLoading = loading;
+        },
+        SET_ERROR_MESSAGE(state, message) {
+            state.errorMessage = message;
         },
     },
     actions: {
@@ -42,14 +46,14 @@ export const CommentsModule = {
                 commit("SET_LOADING", false);
             }
         },
-        async deleteComment({ dispatch }, { com, postId }) {
+        async deleteComment({ commit, dispatch }, { com, postId }) {
             try {
                 await axios.delete("/api/comment/deletecomment", {
-                    data: { comment_id: com.id },
+                    data: { comment_id: com.id, user_id: com.user_id },
                 });
                 dispatch("getCommentsOfPost", postId);
             } catch (error) {
-                console.log(error);
+                commit("SET_ERROR_MESSAGE", error.response.data.message);
             }
         },
     },

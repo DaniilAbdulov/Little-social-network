@@ -6,7 +6,12 @@
             <router-link class="navbar__link" to="/todo">ToDo</router-link>
         </div>
         <div class="navbar__auth">
-            <router-link class="navbar__link" to="/login">Login</router-link>
+            <router-link
+                class="navbar__link"
+                to="/login"
+                v-if="!adminIsAuthenticated && !userIsAuthenticated"
+                >Login</router-link
+            >
             <router-link class="navbar__link" to="/signup">SignUp</router-link>
             <button
                 class="navbar__link"

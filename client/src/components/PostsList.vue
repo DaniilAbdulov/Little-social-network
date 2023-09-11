@@ -1,6 +1,7 @@
 <template>
     <div>
         <p>{{ searchQuery }}</p>
+        <p>{{ errorMessage }}</p>
         <div class="posts">
             <div class="posts__container">
                 <div class="post" v-for="post in searchPosts" :key="post.id">
@@ -53,6 +54,7 @@ export default {
     computed: {
         ...mapState("posts", {
             posts: (state) => state.posts,
+            errorMessage: (state) => state.errorMessage,
         }),
         searchPosts() {
             return this.posts.filter(

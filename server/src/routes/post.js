@@ -11,7 +11,13 @@ router.get(
     asyncHandler(async (req, res) => {
         const userId = req.userId;
         const allPosts = await Post.query()
-            .select("posts.id", "posts.title", "posts.body", "posts.created_at")
+            .select(
+                "posts.id",
+                "posts.title",
+                "posts.body",
+                "posts.created_at",
+                "posts.user_id"
+            )
             .leftJoinRelated("comments")
             .joinRelated("user as users") // Make sure to alias "user" to "users" to match the given SQL syntax.
             .withGraphFetched("user(selectUsername)")
@@ -77,22 +83,41 @@ router.delete(
     "/deletepost",
     authenticate,
     asyncHandler(async (req, res) => {
-        const { post_id } = req.body;
+        const { post_id, user_id } = req.body;
+        if (
+            !Number.isInteger(post_id) ||
+            !Number.isInteger(user_id) ||
+            post_id <= 0 ||
+            user_id <= 0
+        ) {
+            return res.status(400).json({
+                message: "Invalid post_id or user_id",
+            });
+        }
+
+        if (req.userId !== user_id) {
+            return res.status(403).json({
+                message: "You can't delete posts by other users",
+            });
+        }
+
         try {
             const deletedPost = await Post.query().deleteById(post_id);
 
             if (deletedPost) {
                 res.status(200).json({
-                    message: "Post successfully deleted",
+                    message: "Post deleted successfully",
                 });
             } else {
                 res.status(404).json({
-                    message: "Post not found",
+                    message: "Post not found or unauthorized",
                 });
             }
         } catch (error) {
             console.error(error);
-            res.status(500).json({ message: "Failed to delete Post" });
+            res.status(500).json({
+                message: "Internal Server Error",
+            });
         }
     })
 );

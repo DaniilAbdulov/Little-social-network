@@ -7,11 +7,15 @@ export const PostsModule = {
             body: "",
         },
         posts: [],
+        errorMessage: "",
     }),
     getters: {},
     mutations: {
         SET_ALL_POSTS(state, posts) {
             state.posts = posts;
+        },
+        SET_ERROR_MESSAGE(state, message) {
+            state.errorMessage = message;
         },
     },
     actions: {
@@ -34,15 +38,17 @@ export const PostsModule = {
                 console.log(error);
             }
         },
-        async deletePost({ dispatch }, post) {
+        async deletePost({ commit, dispatch }, post) {
             try {
                 await axios.delete("/api/post/deletepost", {
-                    data: { post_id: post.id },
+                    data: {
+                        post_id: post.id,
+                        user_id: post.user_id,
+                    },
                 });
-
                 dispatch("getAllPosts");
             } catch (error) {
-                console.log(error);
+                commit("SET_ERROR_MESSAGE", error.response.data.message);
             }
         },
     },

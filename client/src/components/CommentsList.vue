@@ -1,5 +1,6 @@
 <template>
     <div>
+        <p>{{ errorMessage }}</p>
         <div v-if="isLoading">Loading comments...</div>
         <div v-else>
             <div v-if="comments.length > 0">
@@ -49,6 +50,7 @@ export default {
         ...mapState("comments", {
             comments: (state) => state.comments,
             isLoading: (state) => state.isLoading,
+            errorMessage: (state) => state.errorMessage,
         }),
         ...mapGetters("lognsig", {
             adminIsAuthenticated: "adminIsAuthenticated",
