@@ -1,7 +1,5 @@
 <template>
     <div>
-        <p>{{ postsCount }}</p>
-        <p>{{ postPage }}</p>
         <div class="posts">
             <div class="posts__container">
                 <div class="post" v-for="post in searchPosts" :key="post.id">
@@ -30,9 +28,6 @@
             class="observer"
             v-if="postsCount >= postPage"
         ></div>
-        <!-- <button @click="getMorePosts" v-if="postsCount >= postPage">
-            getMorePosts
-        </button> -->
     </div>
 </template>
 
