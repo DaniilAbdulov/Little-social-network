@@ -5,7 +5,6 @@ const Post = require("../models/Post");
 
 let router = express.Router();
 
-// Получение всех постов из базы данных
 router.get(
     "/allposts",
     asyncHandler(async (req, res) => {
@@ -19,7 +18,7 @@ router.get(
                 "posts.user_id"
             )
             .leftJoinRelated("comments")
-            .joinRelated("user as users") // Make sure to alias "user" to "users" to match the given SQL syntax.
+            .joinRelated("user as users")
             .withGraphFetched("user(selectUsername)")
             .modifiers({
                 selectUsername(builder) {
@@ -27,9 +26,8 @@ router.get(
                 },
             })
             .groupBy("posts.id", "users.id")
-            .orderBy("posts.created_at", "desc") // Group by 'users.id' instead of 'users.username' to handle duplicate usernames correctly.
+            .orderBy("posts.created_at", "desc")
             .select((builder) => {
-                // Add comment count subquery
                 builder
                     .count("comments.id as comment_count")
                     .from("comments")
@@ -37,7 +35,6 @@ router.get(
                     .as("comment_count");
             })
             .select((builder) => {
-                // Add likes count subquery
                 builder
                     .count("likes.id as likes_count")
                     .from("likes")
