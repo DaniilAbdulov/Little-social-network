@@ -9,7 +9,7 @@ router.get(
     "/posts",
     asyncHandler(async (req, res) => {
         const postLength = await Post.query().count("id").first();
-        const { postPage, postLimit } = req.query;
+        const { requestedCountOfPosts, postLimit } = req.query;
         const allPosts = await Post.query()
             .select(
                 "posts.id",
@@ -28,7 +28,7 @@ router.get(
             })
             .groupBy("posts.id", "users.id")
             .limit(postLimit)
-            .offset(postPage)
+            .offset(requestedCountOfPosts)
             .select((builder) => {
                 builder
                     .count("comments.id as comment_count")

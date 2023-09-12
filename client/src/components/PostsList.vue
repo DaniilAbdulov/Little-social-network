@@ -36,11 +36,7 @@
                 </div>
             </div>
         </div>
-        <div
-            v-intersection="getMorePosts"
-            class="observer"
-            v-if="postsCount >= postPage"
-        ></div>
+        <div v-intersection="getMorePosts" class="observer"></div>
     </div>
 </template>
 

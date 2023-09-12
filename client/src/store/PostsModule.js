@@ -8,8 +8,8 @@ export const PostsModule = {
         },
         posts: [],
         errorMessage: "",
-        postPage: 0,
-        postLimit: 3,
+        requestedCountOfPosts: 0,
+        postLimit: 4,
         postsCount: 0,
     }),
     getters: {},
@@ -21,7 +21,10 @@ export const PostsModule = {
             state.errorMessage = message;
         },
         INCREMENT_POST_PAGE(state) {
-            state.postPage += state.postLimit;
+            state.requestedCountOfPosts += state.postLimit;
+        },
+        EMPTY_COUNT_OF_REQUESTED_POSTS(state) {
+            state.requestedCountOfPosts = 0;
         },
         SET_ALL_POSTS_COUNT(state, count) {
             state.postsCount = count;
@@ -48,13 +51,18 @@ export const PostsModule = {
             }
         },
         async getPosts({ commit }) {
-            const postPage = this.state.posts.postPage;
+            commit("EMPTY_COUNT_OF_REQUESTED_POSTS");
+            const requestedCountOfPosts =
+                this.state.posts.requestedCountOfPosts;
             const postLimit = this.state.posts.postLimit;
-            // console.log([postPage, postLimit]);
             try {
                 const response = await axios.get("/api/post/posts", {
-                    params: { postPage: postPage, postLimit: postLimit },
+                    params: {
+                        requestedCountOfPosts: requestedCountOfPosts,
+                        postLimit: postLimit,
+                    },
                 });
+                commit("SET_ALL_POSTS_COUNT", response.data.posts_length);
                 commit("SET_ALL_POSTS", response.data.posts);
                 commit("ADD_POST_METADATA");
             } catch (error) {
@@ -62,15 +70,20 @@ export const PostsModule = {
             }
         },
         async getMorePosts({ commit }) {
-            console.log("getMorePosts is still working");
             commit("INCREMENT_POST_PAGE");
-            const postPage = this.state.posts.postPage;
+            const requestedCountOfPosts =
+                this.state.posts.requestedCountOfPosts;
             const postLimit = this.state.posts.postLimit;
+            const postsCount = this.state.posts.postsCount;
+            console.log(requestedCountOfPosts >= postsCount);
             try {
                 const response = await axios.get("/api/post/posts", {
-                    params: { postPage: postPage, postLimit: postLimit },
+                    params: {
+                        requestedCountOfPosts: requestedCountOfPosts,
+                        postLimit: postLimit,
+                    },
                 });
-                commit("SET_ALL_POSTS_COUNT", response.data.posts_length);
+
                 const data = [...response.data.posts];
                 commit("UPDATE_POSTS", data);
                 commit("ADD_POST_METADATA");
