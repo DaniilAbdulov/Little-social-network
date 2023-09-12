@@ -17,7 +17,6 @@
             </form>
         </div>
         <comments-list :post-id="postId"></comments-list>
-        <h1>{{ postId }}</h1>
     </div>
 </template>
 
