@@ -5,7 +5,7 @@
             Please login to create posts.
         </div>
         <button @click="showDialog">Create post</button>
-        <my-dialog :show="dialogVisible" @update:show="hideDialog">
+        <my-dialog v-model:show="dialogVisible">
             <div>
                 <form @submit.prevent="sendNewPost">
                     <input
