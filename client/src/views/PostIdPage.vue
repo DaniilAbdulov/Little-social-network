@@ -29,7 +29,6 @@ export default {
         return {
             comment: {
                 body: "",
-                post_id: this.$route.params.id,
             },
             postId: this.$route.params.id,
             postTitle: this.$route.query.title,

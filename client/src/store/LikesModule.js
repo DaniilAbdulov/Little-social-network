@@ -18,7 +18,7 @@ export const LikesModule = {
                     post.user_liked = false;
                 }
 
-                await dispatch("posts/getAllPosts", null, { root: true });
+                // await dispatch("posts/getPosts", null, { root: true });
             } catch (error) {
                 console.log(error);
             }
