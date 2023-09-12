@@ -9,7 +9,7 @@ export const PostsModule = {
         posts: [],
         errorMessage: "",
         requestedCountOfPosts: 0,
-        postLimit: 4,
+        postLimit: 3,
         postsCount: 0,
     }),
     getters: {},
@@ -75,7 +75,12 @@ export const PostsModule = {
                 this.state.posts.requestedCountOfPosts;
             const postLimit = this.state.posts.postLimit;
             const postsCount = this.state.posts.postsCount;
-            console.log(requestedCountOfPosts >= postsCount);
+            if (
+                requestedCountOfPosts + postsCount !== requestedCountOfPosts &&
+                requestedCountOfPosts > postsCount
+            ) {
+                return;
+            }
             try {
                 const response = await axios.get("/api/post/posts", {
                     params: {
@@ -99,7 +104,7 @@ export const PostsModule = {
                         user_id: post.user_id,
                     },
                 });
-                dispatch("getAllPosts");
+                dispatch("getPosts");
             } catch (error) {
                 commit("SET_ERROR_MESSAGE", error.response.data.message);
             }

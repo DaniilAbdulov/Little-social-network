@@ -17,6 +17,7 @@
             </form>
         </div>
         <comments-list :post-id="postId"></comments-list>
+        <h1>{{ postId }}</h1>
     </div>
 </template>
 
@@ -29,6 +30,7 @@ export default {
         return {
             comment: {
                 body: "",
+                post_id: "",
             },
             postId: this.$route.params.id,
             postTitle: this.$route.query.title,
@@ -47,6 +49,9 @@ export default {
         ...mapActions("comments", {
             createCommentInDB: "createCommentInDB",
         }),
+    },
+    mounted() {
+        this.comment.post_id = this.postId;
     },
 };
 </script>
