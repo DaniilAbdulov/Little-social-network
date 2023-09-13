@@ -60,7 +60,6 @@ export default {
             selectedSort: "",
             sortOptions: [
                 { value: "title", name: "По названию" },
-                { value: "body", name: "По содержимому" },
                 { value: "indexOfPopular", name: "По популярности" },
                 { value: "created_at", name: "По дате" },
             ],

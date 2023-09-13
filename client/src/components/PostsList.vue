@@ -9,7 +9,25 @@
                 >
                     <div class="post__author">@{{ post.user.username }}</div>
                     <div class="post__title">{{ post.title }}</div>
-                    <div class="post__body">{{ post.body }}</div>
+                    <p>Body length equal = #{{ post.body_length }}#</p>
+                    <div class="post__body">
+                        {{ post.body }}
+                    </div>
+                    <div
+                        v-if="post.body_length > lengthOfVisibleChars"
+                        class="post__continue"
+                    >
+                        <router-link
+                            :to="{
+                                path: `/post/${post.id}/comments`,
+                                query: {
+                                    title: post.title,
+                                    body: post.body,
+                                },
+                            }"
+                            >...see more</router-link
+                        >
+                    </div>
                     <div class="post__time">{{ post.created_at }}</div>
                     <div class="post__like">
                         <button @click="toggleLike(post)">Like</button>
@@ -44,6 +62,11 @@
 import { mapActions, mapState } from "vuex";
 
 export default {
+    data() {
+        return {
+            lengthOfVisibleChars: 0,
+        };
+    },
     props: {
         searchQuery: {
             type: String,
@@ -60,6 +83,10 @@ export default {
         },
         ...mapActions("posts", ["getPosts", "deletePost", "getMorePosts"]),
         ...mapActions("likes", ["toggleLikeOnPost"]),
+        updateLengthOfVisibleChars() {
+            const windowWidth = window.innerWidth;
+            this.lengthOfVisibleChars = 0.9 * windowWidth;
+        },
     },
     computed: {
         ...mapState("posts", {
@@ -85,10 +112,7 @@ export default {
         sortedPosts() {
             return [
                 ...this.posts.sort((a, b) => {
-                    if (
-                        this.selectedSort === "title" ||
-                        this.selectedSort === "body"
-                    ) {
+                    if (this.selectedSort === "title") {
                         return a[this.selectedSort].localeCompare(
                             b[this.selectedSort]
                         );
@@ -106,6 +130,11 @@ export default {
     },
     mounted() {
         this.getPosts();
+        this.updateLengthOfVisibleChars();
+        window.addEventListener("resize", this.updateLengthOfVisibleChars);
+    },
+    beforeDestroy() {
+        window.removeEventListener("resize", this.updateLengthOfVisibleChars);
     },
 };
 </script>
@@ -128,6 +157,12 @@ export default {
     }
     &__body {
         font-size: 24px;
+        max-height: 248px;
+        overflow: hidden;
+    }
+    &__continue {
+        font-size: 22px;
+        font-weight: 700;
     }
     &__time {
         font-style: italic;

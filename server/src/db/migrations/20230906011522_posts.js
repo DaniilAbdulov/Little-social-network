@@ -3,7 +3,7 @@ exports.up = function (knex) {
         t.increments();
         t.integer("user_id").unsigned().notNullable();
         t.string("title").notNullable();
-        t.string("body").notNullable();
+        t.text("body").notNullable();
         t.dateTime("created_at").defaultTo(knex.fn.now());
         t.dateTime("updated_at").defaultTo(knex.fn.now());
 

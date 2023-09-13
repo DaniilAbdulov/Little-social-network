@@ -35,6 +35,7 @@ export const PostsModule = {
         ADD_POST_METADATA(state) {
             state.posts.forEach((post) => {
                 post.indexOfPopular = +post.comment_count + +post.likes_count;
+                post.body_length = post.body.length;
             });
         },
     },

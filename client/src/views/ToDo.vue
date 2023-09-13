@@ -9,9 +9,13 @@
         </div>
         <div>
             <div class="todos" v-for="todo in todos" :key="todo.id">
-                <button @click="changeComplete(todo)" class="todo__completed">
-                    {{ todo.completed }}
-                </button>
+                <input
+                    type="checkbox"
+                    v-model="todo.completed"
+                    @change="changeComplete(todo)"
+                    class="todo__completed"
+                />
+                <div>{{ todo.completed }}</div>
                 <div class="todo__content">{{ todo.body }}</div>
                 <button @click="deleteTodo(todo)">delte todo</button>
             </div>
