@@ -1,6 +1,6 @@
 <template>
     <div class="signup-page">
-        <div class="log-reg-form" v-if="!regusername">
+        <div class="log-reg-form">
             <h1>Sign Up</h1>
             <form @submit.prevent="handleSubmit">
                 <div class="log-reg-form__item">
@@ -42,15 +42,7 @@
                 <button type="submit">Sign Up</button>
             </form>
         </div>
-        <div class="log-reg-completed" v-if="regusername">
-            <h2>Congratulations, {{ regusername }}</h2>
-            <p>You are registred</p>
-            <p>
-                Please, LogIn with your username and password
-                <router-link to="/login">Login</router-link>
-            </p>
-        </div>
-        <div v-else-if="errorMessage">{{ errorMessage }}</div>
+        <div>{{ errorMessage }}</div>
     </div>
 </template>
 
@@ -78,6 +70,7 @@ export default {
             try {
                 await this.RegistrationUser(this.user);
                 this.hideDialog();
+                console.log(this.user);
             } catch (error) {
                 // Обработка ошибки здесь
                 console.error(error);
@@ -85,18 +78,14 @@ export default {
         },
         hideDialog() {
             this.$emit("update:signUpVisible", false);
-            location.reload();
         },
         ...mapActions("lognsig", {
             RegistrationUser: "RegistrationUser",
         }),
     },
     computed: {
-        regusername() {
-            return this.$store.state.lognsig.regUser.regUserName;
-        },
         errorMessage() {
-            return this.$store.state.lognsig.errorMessage;
+            return this.$store.state.lognsig.regErrorMessage;
         },
     },
 };

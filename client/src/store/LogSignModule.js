@@ -8,6 +8,7 @@ export const LogSignModule = {
             role: "",
         },
         errorMessage: "",
+        regErrorMessage: "",
         regUser: {
             regUserName: "",
         },
@@ -35,6 +36,9 @@ export const LogSignModule = {
         },
         SET_ERROR_MESSAGE(state, message) {
             state.errorMessage = message;
+        },
+        SET_REGERROR_MESSAGE(state, regmessage) {
+            state.regErrorMessage = regmessage;
         },
         SET_REG_USER(state, newUser) {
             state.regUser.regUserName = newUser.username;
@@ -92,7 +96,7 @@ export const LogSignModule = {
                 axios.defaults.headers.common.Authorization = `Bearer ${token}`; // задаем заголовок Authorization для всех последующих запросов
                 commit("SET_REG_USER", newUser); // обновляем информацию о новом пользователе в состоянии Vuex
             } catch (error) {
-                commit("SET_ERROR_MESSAGE", error.response.data.message);
+                commit("SET_REGERROR_MESSAGE", error.response.data.message);
             }
         },
 

@@ -5,19 +5,26 @@
             v-if="!adminIsAuthenticated || !userIsAuthenticated"
         >
             <h1>Log In</h1>
-            <form @submit="handleSubmit">
-                <div class="log-reg-form__item">
+            <form @submit.prevent="handleSubmit">
+                <div
+                    class="log-reg-form__item"
+                    :class="{ 'log-reg-form__error': userError }"
+                >
                     <label for="username">Username:</label>
                     <input
                         type="text"
                         id="username"
                         v-model="user.username"
                         autocomplete="username"
-                        placeholder="gendalf"
+                        :placeholder="usernamePlaceholder"
                         required
+                        class="log-reg-form__input"
                     />
                 </div>
-                <div class="log-reg-form__item">
+                <div
+                    class="log-reg-form__item"
+                    :class="{ 'log-reg-form__error': passwordError }"
+                >
                     <label for="password">Password:</label>
                     <input
                         type="password"
@@ -25,13 +32,13 @@
                         v-model="user.password"
                         autocomplete="current-password"
                         required
-                        placeholder="****"
+                        :placeholder="passwordPlaceholder"
+                        class="log-reg-form__input"
                     />
                 </div>
                 <button type="submit">Log In</button>
             </form>
         </div>
-        <div style="color: red">{{ errorMessage }}</div>
     </div>
 </template>
 
@@ -51,14 +58,32 @@ export default {
                 username: "",
                 password: "",
             },
+            usernamePlaceholder: "gendalf",
+            passwordPlaceholder: "****",
+            userError: false,
+            passwordError: false,
         };
     },
     methods: {
         async handleSubmit() {
             try {
                 await this.logInUser(this.user);
+                this.userError = false; // Add this
+                this.passwordError = false; // Add this
                 if (!this.errorMessage) {
                     this.hideDialog();
+                } else {
+                    this.user.username = "";
+                    this.user.password = "";
+                    if (this.errorMessage === "User not found") {
+                        this.userError = true;
+                        this.usernamePlaceholder = "User not found";
+                        this.passwordPlaceholder = "****";
+                    } else {
+                        this.passwordError = true;
+                        this.usernamePlaceholder = "gendalf";
+                        this.passwordPlaceholder = "Invalid password";
+                    }
                 }
             } catch (error) {
                 console.error(error);
@@ -76,12 +101,6 @@ export default {
             adminIsAuthenticated: "adminIsAuthenticated",
             userIsAuthenticated: "userIsAuthenticated",
         }),
-        username() {
-            return this.$store.state.lognsig.user.username;
-        },
-        userrole() {
-            return this.$store.state.lognsig.user.role;
-        },
         errorMessage() {
             return this.$store.state.lognsig.errorMessage;
         },
@@ -104,5 +123,16 @@ export default {
     flex-direction: column;
     gap: 5px;
     margin-bottom: 10px;
+}
+.log-reg-form__error input {
+    border: 2px solid red;
+    box-shadow: inset 0px 0px 5px 0px red;
+}
+.log-reg-form__input {
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 14px;
+    line-height: 14px;
 }
 </style>
