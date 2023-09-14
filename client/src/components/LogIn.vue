@@ -5,7 +5,7 @@
             v-if="!adminIsAuthenticated || !userIsAuthenticated"
         >
             <h1>Log In</h1>
-            <form @submit.prevent="handleSubmit">
+            <form @submit="handleSubmit">
                 <div class="log-reg-form__item">
                     <label for="username">Username:</label>
                     <input
@@ -66,7 +66,6 @@ export default {
         },
         hideDialog() {
             this.$emit("update:logInVisible", false);
-            location.reload();
         },
         ...mapActions("lognsig", {
             logInUser: "logInUser",
