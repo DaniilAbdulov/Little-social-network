@@ -56,6 +56,7 @@ export const LogSignModule = {
             }
         },
         async logInUser({ commit, dispatch }, { username, password }) {
+            commit("SET_ERROR_MESSAGE", "");
             try {
                 const response = await axios.post("/api/auth/login", {
                     username,

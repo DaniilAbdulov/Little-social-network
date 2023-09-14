@@ -31,19 +31,7 @@
                 <button type="submit">Log In</button>
             </form>
         </div>
-        <div
-            class="log-reg-completed"
-            v-if="adminIsAuthenticated || userIsAuthenticated"
-        >
-            <h2>Congratulations, {{ username }}</h2>
-            <p>You are logged in</p>
-            <p>
-                Let's see what is going on here
-                <router-link to="/">Home</router-link>
-            </p>
-            <p>Your rights are {{ userrole }} rights</p>
-        </div>
-        <div v-else-if="errorMessage">{{ errorMessage }}</div>
+        <div style="color: red">{{ errorMessage }}</div>
     </div>
 </template>
 
@@ -51,6 +39,12 @@
 import { mapGetters, mapActions } from "vuex";
 
 export default {
+    props: {
+        logInVisibile: {
+            type: Boolean,
+            default: false,
+        },
+    },
     data() {
         return {
             user: {
@@ -63,10 +57,16 @@ export default {
         async handleSubmit() {
             try {
                 await this.logInUser(this.user);
+                if (!this.errorMessage) {
+                    this.hideDialog();
+                }
             } catch (error) {
-                // Обработка ошибки здесь
                 console.error(error);
             }
+        },
+        hideDialog() {
+            this.$emit("update:logInVisible", false);
+            location.reload();
         },
         ...mapActions("lognsig", {
             logInUser: "logInUser",
@@ -97,9 +97,8 @@ export default {
     text-align: center;
     max-width: 300px;
     margin: 0 auto;
-    border: 1px solid black;
     border-radius: 10px;
-    padding: 10px;
+    /* padding: 10px; */
 }
 .log-reg-form__item {
     display: flex;

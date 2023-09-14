@@ -1,7 +1,5 @@
 <template>
     <div class="dialog" v-if="show" @click.stop="hideDialog">
-        <!--если show true, то диалоговое окно будет видно
-        для того что бы скрыть модальное окно вешаем слушатель click, который вызывает hideDialog-->
         <div @click.stop class="dialog__content">
             <slot></slot>
         </div>
@@ -17,7 +15,6 @@ export default {
             default: false,
         },
     },
-    //передаем в Props объект show, который явлется логическим значением. По-умолчанию false
     methods: {
         hideDialog() {
             this.$emit("update:show", false);

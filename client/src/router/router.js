@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomePage from "@/views/HomePage";
-import LogIn from "@/views/LogIn";
+// import LogIn from "@/views/LogIn";
 import SignUp from "@/views/SignUp";
 import PostPage from "@/views/PostPage";
 import PostIdPage from "@/views/PostIdPage";
@@ -15,10 +15,10 @@ const routes = [
         path: "/posts",
         component: PostPage,
     },
-    {
-        path: "/login",
-        component: LogIn,
-    },
+    // {
+    //     path: "/login",
+    //     component: LogIn,
+    // },
     {
         path: "/signup",
         component: SignUp,
