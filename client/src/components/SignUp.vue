@@ -57,6 +57,12 @@
 <script>
 import { mapActions } from "vuex";
 export default {
+    props: {
+        signUpVisible: {
+            type: Boolean,
+            default: false,
+        },
+    },
     data() {
         return {
             user: {
@@ -71,10 +77,15 @@ export default {
         async handleSubmit() {
             try {
                 await this.RegistrationUser(this.user);
+                this.hideDialog();
             } catch (error) {
                 // Обработка ошибки здесь
                 console.error(error);
             }
+        },
+        hideDialog() {
+            this.$emit("update:signUpVisible", false);
+            location.reload();
         },
         ...mapActions("lognsig", {
             RegistrationUser: "RegistrationUser",

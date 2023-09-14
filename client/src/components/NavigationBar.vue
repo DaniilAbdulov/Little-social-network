@@ -19,7 +19,19 @@
                     @update:logInVisible="updateLogInVisible"
                 ></log-in>
             </my-dialog>
-            <router-link class="navbar__link" to="/signup">SignUp</router-link>
+            <button
+                class="navbar__link"
+                v-if="!adminIsAuthenticated && !userIsAuthenticated"
+                @click="showSignUp"
+            >
+                SignUp
+            </button>
+            <my-dialog v-model:show="signUpVisible">
+                <sign-up
+                    :signUpVisible="signUpVisible"
+                    @update:signUpVisible="updatesignUpVisible"
+                ></sign-up>
+            </my-dialog>
             <button
                 class="navbar__link"
                 @click="logOutHandler"
@@ -39,17 +51,19 @@
 
 <script>
 import { mapGetters, mapActions, mapState } from "vuex";
+import SignUp from "./SignUp.vue";
 import LogIn from "./LogIn.vue";
 export default {
     data() {
         return {
             logInVisible: false,
+            signUpVisible: false,
         };
     },
     components: {
         LogIn,
+        SignUp,
     },
-    name: "NavigationBar",
     computed: {
         ...mapGetters("lognsig", {
             adminIsAuthenticated: "adminIsAuthenticated",
@@ -72,6 +86,12 @@ export default {
         },
         updateLogInVisible(newLogInVisible) {
             this.logInVisible = newLogInVisible;
+        },
+        showSignUp() {
+            this.signUpVisible = true;
+        },
+        updatesignUpVisible(newsignUpVisible) {
+            this.signUpVisible = newsignUpVisible;
         },
     },
 };
