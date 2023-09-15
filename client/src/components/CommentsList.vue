@@ -67,9 +67,30 @@ export default {
     },
 };
 </script>
-<style>
+<style lang="scss">
 .comments {
     color: white;
+}
+.comment {
+    border: 1px solid white;
+    padding: 10px;
+    margin-bottom: 10px;
+    &__container {
+    }
+    &__data {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 10px;
+    }
+    &__author {
+    }
+    &__time {
+    }
+    &__body {
+        font-size: 20px;
+        line-height: 20px;
+        margin-bottom: 15px;
+    }
 }
 .v-enter-active,
 .v-leave-active {

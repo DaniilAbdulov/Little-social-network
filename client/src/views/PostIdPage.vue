@@ -5,7 +5,7 @@
             <div class="post__title">{{ postTitle }}</div>
             <div class="post__body">{{ postBody }}</div>
         </div>
-        <div>
+        <div class="create-comment">
             <form @submit.prevent="createComment">
                 <input
                     type="text"
@@ -61,6 +61,9 @@ export default {
     .post-id-page {
         margin-top: 80px;
     }
+}
+.create-comment {
+    margin-bottom: 20px;
 }
 .empty-list {
     margin-top: 20px;
