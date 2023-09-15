@@ -68,22 +68,12 @@ export default {
         async handleSubmit() {
             try {
                 await this.logInUser(this.user);
-                this.userError = false; // Add this
-                this.passwordError = false; // Add this
+                this.userError = false;
+                this.passwordError = false;
                 if (!this.errorMessage) {
                     this.hideDialog();
                 } else {
-                    this.user.username = "";
-                    this.user.password = "";
-                    if (this.errorMessage === "User not found") {
-                        this.userError = true;
-                        this.usernamePlaceholder = "User not found";
-                        this.passwordPlaceholder = "****";
-                    } else {
-                        this.passwordError = true;
-                        this.usernamePlaceholder = "gendalf";
-                        this.passwordPlaceholder = "Invalid password";
-                    }
+                    this.errorHandler();
                 }
             } catch (error) {
                 console.error(error);
@@ -91,6 +81,19 @@ export default {
         },
         hideDialog() {
             this.$emit("update:logInVisible", false);
+        },
+        errorHandler() {
+            this.user.username = "";
+            this.user.password = "";
+            if (this.errorMessage === "User not found") {
+                this.userError = true;
+                this.usernamePlaceholder = "User not found";
+                this.passwordPlaceholder = "****";
+            } else {
+                this.passwordError = true;
+                this.usernamePlaceholder = "gendalf";
+                this.passwordPlaceholder = "Invalid password";
+            }
         },
         ...mapActions("lognsig", {
             logInUser: "logInUser",

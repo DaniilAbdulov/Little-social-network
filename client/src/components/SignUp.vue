@@ -3,41 +3,20 @@
         <div class="log-reg-form">
             <h1>Sign Up</h1>
             <form @submit.prevent="handleSubmit">
-                <div class="log-reg-form__item">
-                    <label for="username">Username:</label>
-                    <input
-                        type="text"
-                        id="username"
-                        v-model="user.username"
-                        required
-                    />
-                </div>
-                <div class="log-reg-form__item">
-                    <label for="email">Email:</label>
-                    <input
-                        type="email"
-                        id="email"
-                        v-model="user.email"
-                        required
-                    />
-                </div>
-                <div class="log-reg-form__item">
-                    <label for="password">Password:</label>
-                    <input
-                        type="password"
-                        id="password"
-                        v-model="user.password"
-                        required
-                    />
-                </div>
-                <div class="log-reg-form__item">
-                    <label for="repeatpassword">Please, repeat password:</label>
-                    <input
-                        type="password"
-                        id="repeatpassword"
-                        v-model="user.repeatpassword"
-                        required
-                    />
+                <div v-for="(field, index) in fields" :key="index">
+                    <div
+                        class="log-reg-form__item"
+                        :class="{ 'log-reg-form__error': errors[field.name] }"
+                    >
+                        <label :for="field.name">{{ field.label }}</label>
+                        <input
+                            :type="field.type"
+                            :id="field.name"
+                            v-model="user[field.name]"
+                            :placeholder="placeHolders[field.name]"
+                            required
+                        />
+                    </div>
                 </div>
                 <button type="submit">Sign Up</button>
             </form>
@@ -63,21 +42,79 @@ export default {
                 password: "",
                 repeatpassword: "",
             },
+            placeHolders: {
+                username: "gendalf",
+                email: "gendalf@thelordofkings.com",
+                password: "****",
+                repeatpassword: "****",
+            },
+            errors: {
+                username: false,
+                email: false,
+                password: false,
+            },
+            fields: [
+                { name: "username", label: "Username", type: "text" },
+                { name: "email", label: "Email", type: "email" },
+                { name: "password", label: "Password", type: "password" },
+                {
+                    name: "repeatpassword",
+                    label: "Please, repeat password",
+                    type: "password",
+                },
+            ],
         };
     },
     methods: {
         async handleSubmit() {
             try {
                 await this.RegistrationUser(this.user);
-                this.hideDialog();
-                console.log(this.user);
+                this.resetErrors();
+                if (!this.errorMessage) {
+                    this.hideDialog();
+                } else {
+                    console.log(this.errorMessage);
+                    this.errorHandler();
+                }
             } catch (error) {
                 // Обработка ошибки здесь
                 console.error(error);
             }
         },
+        errorHandler() {
+            this.resetUser();
+            if (this.errorMessage === "Username already exists") {
+                this.errors.username = true;
+                this.placeHolders.username = "Username already exists";
+            } else if (this.errorMessage === "Email already exists") {
+                this.errors.email = true;
+                this.placeHolders.email = "Email already exists";
+            } else if (
+                this.errorMessage ===
+                "Username already exists and Email already exists"
+            ) {
+                this.errors.username = true;
+                this.errors.email = true;
+                this.placeHolders.username = "Username already exists";
+                this.placeHolders.email = "Email already exists";
+            } else if (this.errorMessage === "Please check your password") {
+                this.errors.password = true;
+                this.placeHolders.repeatpassword = "Please check your password";
+            }
+        },
         hideDialog() {
             this.$emit("update:signUpVisible", false);
+        },
+        resetUser() {
+            this.user.username = "";
+            this.user.email = "";
+            this.user.password = "";
+            this.user.repeatpassword = "";
+        },
+        resetErrors() {
+            this.errors.username = false;
+            this.errors.email = false;
+            this.errors.password = false;
         },
         ...mapActions("lognsig", {
             RegistrationUser: "RegistrationUser",
@@ -90,15 +127,3 @@ export default {
     },
 };
 </script>
-
-<style>
-.log-reg-completed {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    border: 1px solid black;
-    padding: 15px;
-    text-align: center;
-}
-</style>
