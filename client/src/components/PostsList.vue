@@ -1,8 +1,8 @@
 <template>
     <div>
-        <div class="posts">
-            <div class="posts__container">
-                <div
+        <div class="posts" :class="{ posts__hidden: showErrorOrNot }">
+            <TransitionGroup name="list" tag="ul">
+                <li
                     class="post"
                     v-for="post in sortedAndSearchedPosts"
                     :key="post.id"
@@ -49,10 +49,13 @@
                         <p>{{ post.comment_count }}</p>
                     </div>
                     <div class="post__delete">
-                        <button @click="deletePost(post)">Delete</button>
+                        <button @click="deletePostHandler(post)">Delete</button>
                     </div>
-                </div>
-            </div>
+                </li>
+            </TransitionGroup>
+        </div>
+        <div v-if="showErrorOrNot" class="error-message">
+            {{ this.postErrorMessage }}
         </div>
         <div v-intersection="getMorePosts" class="observer"></div>
     </div>
@@ -65,6 +68,7 @@ export default {
     data() {
         return {
             lengthOfVisibleChars: 0,
+            showErrorOrNot: false,
         };
     },
     props: {
@@ -78,6 +82,19 @@ export default {
         },
     },
     methods: {
+        deletePostHandler(post) {
+            if (!this.postErrorMessage) {
+                this.deletePost(post);
+            } else {
+                this.showError();
+            }
+        },
+        showError() {
+            this.showErrorOrNot = true;
+            setTimeout(() => {
+                this.showErrorOrNot = false;
+            }, 2000);
+        },
         async toggleLike(post) {
             await this.toggleLikeOnPost(post);
         },
@@ -93,7 +110,7 @@ export default {
             posts: (state) => state.posts,
             postsCount: (state) => state.postsCount,
             postPage: (state) => state.postPage,
-            errorMessage: (state) => state.errorMessage,
+            postErrorMessage: (state) => state.postErrorMessage,
         }),
         sortedAndSearchedPosts() {
             return this.sortedPosts.filter(
@@ -141,6 +158,37 @@ export default {
 
 <style lang="scss">
 .posts {
+    color: white;
+}
+.posts__hidden {
+    opacity: 0.1;
+}
+.error-message {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    padding: 10px;
+    border: 1px solid black;
+    background: #ab4141;
+    color: white;
+    box-shadow: 0px 0px 2px 0px white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    transition: all 0.5s ease-in;
+    font-size: 18px;
+}
+.v-enter-active,
+.v-leave-active {
+    transition: opacity 0.5s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+    opacity: 0;
 }
 .posts__container {
 }
@@ -175,6 +223,5 @@ export default {
 }
 .observer {
     height: 30px;
-    border: 1px solid black;
 }
 </style>

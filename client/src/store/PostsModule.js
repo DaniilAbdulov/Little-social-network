@@ -7,7 +7,7 @@ export const PostsModule = {
             body: "",
         },
         posts: [],
-        errorMessage: "",
+        postErrorMessage: "",
         requestedCountOfPosts: 0,
         postLimit: 3,
         postsCount: 0,
@@ -18,7 +18,7 @@ export const PostsModule = {
             state.posts = posts;
         },
         SET_ERROR_MESSAGE(state, message) {
-            state.errorMessage = message;
+            state.postErrorMessage = message;
         },
         INCREMENT_POST_PAGE(state) {
             state.requestedCountOfPosts += state.postLimit;
@@ -98,6 +98,7 @@ export const PostsModule = {
             }
         },
         async deletePost({ commit, dispatch }, post) {
+            commit("SET_ERROR_MESSAGE", "");
             try {
                 await axios.delete("/api/post/deletepost", {
                     data: {

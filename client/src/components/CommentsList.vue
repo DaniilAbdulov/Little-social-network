@@ -1,10 +1,9 @@
 <template>
     <div>
-        <p style="color: red; font-size: 20px">!{{ errorMessage }}</p>
         <div v-if="isLoading">Loading comments...</div>
         <div v-else>
-            <div v-if="comments.length > 0">
-                <div class="comments" v-for="com in comments" :key="com.id">
+            <TransitionGroup name="list" tag="ul" v-if="comments.length > 0">
+                <li class="comments" v-for="com in comments" :key="com.id">
                     <div class="comment">
                         <div class="comment__container">
                             <div class="comment__data">
@@ -30,8 +29,8 @@
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
+                </li>
+            </TransitionGroup>
             <div v-else>No comments</div>
         </div>
     </div>
@@ -68,3 +67,17 @@ export default {
     },
 };
 </script>
+<style>
+.comments {
+    color: white;
+}
+.v-enter-active,
+.v-leave-active {
+    transition: opacity 0.5s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+    opacity: 0;
+}
+</style>

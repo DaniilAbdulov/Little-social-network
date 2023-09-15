@@ -83,6 +83,7 @@ export const LogSignModule = {
             { commit, state },
             { username, password, email, repeatpassword }
         ) {
+            commit("SET_REGERROR_MESSAGE", "");
             try {
                 const response = await axios.post("/api/auth/register", {
                     username,

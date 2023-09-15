@@ -52,7 +52,7 @@ router.post(
                 })
                 .skipUndefined();
             res.status(201).json({
-                post: {
+                comment: {
                     id: newComment.id,
                     user_id: newComment.user_id,
                     post_id: newComment.post_id,
