@@ -58,6 +58,7 @@ body {
     -moz-text-size-adjust: 100%;
     -webkit-text-size-adjust: 100%;
     background-color: rgb(46, 45, 45);
+    color: white;
     font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
 }
 input,

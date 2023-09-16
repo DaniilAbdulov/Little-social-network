@@ -51,13 +51,18 @@ router.post(
                     body: req.body.body,
                 })
                 .skipUndefined();
+            const sentNewComment = await Comments.query()
+                .select(
+                    "users.username",
+                    "comments.id",
+                    "comments.body",
+                    "comments.created_at",
+                    "comments.user_id"
+                )
+                .join("users", "users.id", "comments.user_id")
+                .where("comments.id", newComment.id);
             res.status(201).json({
-                comment: {
-                    id: newComment.id,
-                    user_id: newComment.user_id,
-                    post_id: newComment.post_id,
-                    body: newComment.body,
-                },
+                newComment: sentNewComment,
                 message: "Comment successfully created",
             });
         } catch (error) {

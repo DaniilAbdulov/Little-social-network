@@ -24,7 +24,6 @@ export const CommentsModule = {
             state.comments.push(comment);
         },
         COMMENTS_AFTER_DELETE(state, com_id) {
-            console.log(com_id);
             state.comments = state.comments.filter(
                 (comment) => comment.id !== com_id
             );
@@ -37,8 +36,7 @@ export const CommentsModule = {
                     body: comment.body,
                     post_id: comment.post_id,
                 });
-                console.log(response);
-                commit("UPDATE__COMMENTS", response.data);
+                commit("UPDATE__COMMENTS", response.data.newComment[0]);
             } catch (error) {
                 commit("SET_ERROR_MESSAGE", error.response.data.message);
             }
