@@ -91,6 +91,7 @@ export default {
             this.showErrorOrNot = true;
             setTimeout(() => {
                 this.showErrorOrNot = false;
+                this.$store.commit("posts/SET_ERROR_MESSAGE", "");
             }, 2000);
         },
         async toggleLike(post) {
