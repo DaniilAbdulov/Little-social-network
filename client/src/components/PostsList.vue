@@ -13,17 +13,18 @@
                         {{ post.body }}
                     </div>
                     <div v-if="post.body_length > lengthOfVisibleChars">
-                        <router-link
-                            class="post__continue"
-                            :to="{
-                                path: `/post/${post.id}/comments`,
-                                query: {
-                                    title: post.title,
-                                    body: post.body,
-                                },
-                            }"
-                            >...see more</router-link
-                        >
+                        <div class="post__continue">
+                            <router-link
+                                :to="{
+                                    path: `/post/${post.id}/comments`,
+                                    query: {
+                                        title: post.title,
+                                        body: post.body,
+                                    },
+                                }"
+                                >...see more</router-link
+                            >
+                        </div>
                     </div>
                     <div class="post__time">{{ post.time }}</div>
                     <div class="post__buttons">
@@ -179,6 +180,7 @@ export default {
     padding: 10px;
     border: 1px solid black;
     background: #ab4141;
+    border-radius: 10px;
     color: white;
     box-shadow: 0px 0px 2px 0px white;
     display: flex;
@@ -201,6 +203,7 @@ export default {
 }
 .post {
     border: 1px solid black;
+    border-radius: 10px;
     padding: 15px;
     margin-bottom: 10px;
     margin-top: 10px;
@@ -223,7 +226,7 @@ export default {
     }
     &__continue {
         font-size: 22px;
-        font-weight: 700;
+        margin-bottom: 10px;
     }
     &__time {
         font-style: italic;

@@ -56,26 +56,21 @@ export default {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    &__title {
-        padding: 10px;
-    }
+    &__title,
     &__body {
         padding: 10px;
+        border: 1px solid black;
+        border-radius: 10px;
+    }
+    &__body {
         min-height: 200px;
     }
     &__create {
+        max-width: 100px;
+        margin: 0 auto;
         border: 1px solid black;
         background: none;
         padding: 5px;
-        max-width: 100px;
-        margin: 0 auto;
-        transition: all 0.3s ease-out;
-        &:hover {
-            box-shadow: 0px 0px 1px 0px black;
-        }
-        &:active {
-            border: 2px solid black;
-        }
     }
 }
 </style>

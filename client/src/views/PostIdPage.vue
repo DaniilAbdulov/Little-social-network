@@ -5,15 +5,15 @@
             <div class="post__title">{{ postTitle }}</div>
             <div class="post__body">{{ postBody }}</div>
         </div>
-        <div class="create-comment">
+        <div class="comment-form">
             <form @submit.prevent="createComment">
                 <input
                     type="text"
                     v-model="comment.body"
-                    placeholder="comment"
+                    placeholder="Введите комментарий..."
                     required
                 />
-                <button type="submit">create</button>
+                <create-button type="submit">create comment</create-button>
             </form>
         </div>
         <comments-list :post-id="postId"></comments-list>
@@ -62,8 +62,13 @@ export default {
         margin-top: 80px;
     }
 }
-.create-comment {
+.comment-form {
     margin-bottom: 20px;
+}
+.comment-form input {
+    border: 1px solid black;
+    margin-right: 10px;
+    padding: 1px 5px;
 }
 .empty-list {
     margin-top: 20px;

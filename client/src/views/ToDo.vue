@@ -89,7 +89,6 @@ form {
     padding: 10px;
     font-size: 22px;
     line-height: 22px;
-    color: white;
 }
 .form-btn {
     font-size: 24px;
@@ -121,7 +120,6 @@ form {
     padding: 10px;
     font-size: 20px;
     line-height: 20px;
-    color: white;
     flex: 1 1 auto;
 }
 .todo__content-completed {

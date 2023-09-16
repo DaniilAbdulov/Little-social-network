@@ -1,27 +1,32 @@
 <template>
     <div>
         <div class="content" v-if="userIsAuthenticated"></div>
-        <div v-if="!userIsAuthenticated || !adminIsAuthenticated">
-            Please login to create posts.
-        </div>
-        <button @click="showDialog" v-else>Create post</button>
-        <my-dialog v-model:show="postFormVisible">
-            <post-form
-                :post="post"
-                @update:postFormVisible="postFormVisible = $event"
-            ></post-form>
-        </my-dialog>
-        <div>
-            <div class="search">
-                <input
-                    type="text"
-                    name="search"
-                    placeholder="search"
-                    v-model="searchQuery"
-                />
+        <div class="create-search-sort">
+            <div class="create-search-sort__create">
+                <create-button @click="showDialog">Create post</create-button>
+            </div>
+            <my-dialog v-model:show="postFormVisible">
+                <post-form
+                    :post="post"
+                    @update:postFormVisible="postFormVisible = $event"
+                ></post-form>
+            </my-dialog>
+            <div class="create-search-sort__search">
+                <div>
+                    <div class="search">
+                        <input
+                            type="text"
+                            name="search"
+                            placeholder="search"
+                            v-model="searchQuery"
+                        />
+                    </div>
+                </div>
+            </div>
+            <div class="create-search-sort__sort">
+                <my-select v-model="selectedSort" :options="sortOptions" />
             </div>
         </div>
-        <my-select v-model="selectedSort" :options="sortOptions" />
         <posts-list
             :selectedSort="selectedSort"
             :searchQuery="searchQuery"
@@ -33,6 +38,7 @@
 import { mapGetters, mapActions } from "vuex";
 import PostsList from "@/components/PostsList.vue";
 import PostForm from "@/components/PostForm.vue";
+import CreateButton from "../components/UI/CreateButton.vue";
 
 export default {
     components: {
@@ -40,6 +46,7 @@ export default {
         PostForm,
     },
     data() {
+        CreateButton;
         return {
             post: {
                 title: "",
@@ -75,4 +82,20 @@ export default {
 };
 </script>
 
-<style></style>
+<style lang="scss">
+.create-search-sort {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    &__create {
+    }
+    &__search {
+        flex: 1 1 auto;
+        border: 1px solid;
+        padding: 0px 5px;
+        border-radius: 5px;
+    }
+    &__sort {
+    }
+}
+</style>

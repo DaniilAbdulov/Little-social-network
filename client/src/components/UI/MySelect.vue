@@ -1,6 +1,6 @@
 <template>
-    <select :value="modelValue" @change="changeOptions">
-        <option disabled value="">Choose</option>
+    <select :value="modelValue" @change="changeOptions" class="select">
+        <option disabled value="">Сортировать</option>
         <option
             v-for="option in options"
             :key="option.value"
@@ -30,3 +30,11 @@ export default {
     },
 };
 </script>
+<style lang="scss">
+.select {
+    border: 1px solid black;
+    border-radius: 5px;
+}
+.select option {
+}
+</style>
