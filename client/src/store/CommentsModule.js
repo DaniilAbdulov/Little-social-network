@@ -7,7 +7,7 @@ export const CommentsModule = {
         },
         comments: [],
         isLoading: false,
-        errorMessage: "",
+        commentsErrorMessage: "",
     }),
     getters: {},
     mutations: {
@@ -18,7 +18,7 @@ export const CommentsModule = {
             state.isLoading = loading;
         },
         SET_ERROR_MESSAGE(state, message) {
-            state.errorMessage = message;
+            state.commentsErrorMessage = message;
         },
         UPDATE__COMMENTS(state, comment) {
             state.comments.push(comment);

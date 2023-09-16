@@ -1,7 +1,7 @@
 <template>
     <div class="post-id-page">
         <router-link to="/posts">Back</router-link>
-        <div>
+        <div class="post">
             <div class="post__title">{{ postTitle }}</div>
             <div class="post__body">{{ postBody }}</div>
         </div>

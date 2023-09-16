@@ -13,11 +13,9 @@
                     <div class="post__body">
                         {{ post.body }}
                     </div>
-                    <div
-                        v-if="post.body_length > lengthOfVisibleChars"
-                        class="post__continue"
-                    >
+                    <div v-if="post.body_length > lengthOfVisibleChars">
                         <router-link
+                            class="post__continue"
                             :to="{
                                 path: `/post/${post.id}/comments`,
                                 query: {
@@ -162,6 +160,7 @@ export default {
 }
 .posts__hidden {
     opacity: 0.1;
+    transition: all 0.5s ease-out;
 }
 .error-message {
     position: fixed;
@@ -198,22 +197,29 @@ export default {
     margin-bottom: 10px;
     margin-top: 10px;
     &__author {
+        margin-bottom: 10px;
     }
     &__title {
         font-size: 32px;
         font-weight: bold;
+        margin-bottom: 15px;
     }
     &__body {
         font-size: 24px;
-        max-height: 248px;
+        line-height: 24px;
+        letter-spacing: 1px;
+        max-height: 242px;
         overflow: hidden;
+        margin-bottom: 10px;
     }
     &__continue {
         font-size: 22px;
         font-weight: 700;
+        color: white;
     }
     &__time {
         font-style: italic;
+        letter-spacing: 1px;
     }
     &__comments,
     &__like {
@@ -223,5 +229,6 @@ export default {
 }
 .observer {
     height: 30px;
+    border: 1px solid black;
 }
 </style>

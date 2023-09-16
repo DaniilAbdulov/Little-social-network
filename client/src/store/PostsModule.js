@@ -38,24 +38,29 @@ export const PostsModule = {
                 post.body_length = post.body.length;
             });
         },
+        ADD_NEW_POST(state, post) {
+            state.posts.unshift(post);
+        },
+        POSTS_AFTER_DELETE(state, post_id) {
+            state.posts = state.posts.filter((post) => post.id !== post_id);
+        },
     },
     actions: {
-        async createPostInDB({ dispatch }, post) {
+        async createPostInDB({ commit }, post) {
             try {
-                await axios.post("/api/post/newpost", {
+                const response = await axios.post("/api/post/newpost", {
                     title: post.title,
                     body: post.body,
                 });
-                dispatch("getPosts");
+                commit("ADD_NEW_POST", response.data.post[0]);
             } catch (error) {
                 console.log(error);
             }
         },
-        async getPosts({ commit }) {
+        async getPosts({ state, commit }) {
             commit("EMPTY_COUNT_OF_REQUESTED_POSTS");
-            const requestedCountOfPosts =
-                this.state.posts.requestedCountOfPosts;
-            const postLimit = this.state.posts.postLimit;
+            const requestedCountOfPosts = state.requestedCountOfPosts;
+            const postLimit = state.postLimit;
             try {
                 const response = await axios.get("/api/post/posts", {
                     params: {
@@ -70,18 +75,18 @@ export const PostsModule = {
                 console.log(error);
             }
         },
-        async getMorePosts({ commit }) {
+        async getMorePosts({ state, commit }) {
             commit("INCREMENT_POST_PAGE");
-            const requestedCountOfPosts =
-                this.state.posts.requestedCountOfPosts;
-            const postLimit = this.state.posts.postLimit;
-            const postsCount = this.state.posts.postsCount;
+            const requestedCountOfPosts = state.requestedCountOfPosts;
+            const postLimit = state.postLimit;
+            const postsCount = state.postsCount;
             if (
                 requestedCountOfPosts + postsCount !== requestedCountOfPosts &&
                 requestedCountOfPosts > postsCount
             ) {
                 return;
             }
+
             try {
                 const response = await axios.get("/api/post/posts", {
                     params: {
@@ -89,7 +94,6 @@ export const PostsModule = {
                         postLimit: postLimit,
                     },
                 });
-
                 const data = [...response.data.posts];
                 commit("UPDATE_POSTS", data);
                 commit("ADD_POST_METADATA");
@@ -106,7 +110,7 @@ export const PostsModule = {
                         user_id: post.user_id,
                     },
                 });
-                dispatch("getPosts");
+                commit("POSTS_AFTER_DELETE", post.id);
             } catch (error) {
                 commit("SET_ERROR_MESSAGE", error.response.data.message);
             }

@@ -64,13 +64,40 @@ router.post(
                     body,
                 })
                 .skipUndefined();
+            const sendNewPost = await Post.query()
+                .select(
+                    "posts.id",
+                    "posts.title",
+                    "posts.body",
+                    "posts.created_at",
+                    "posts.user_id"
+                )
+                .leftJoinRelated("comments")
+                .joinRelated("user as users")
+                .withGraphFetched("user(selectUsername)")
+                .modifiers({
+                    selectUsername(builder) {
+                        builder.select("username");
+                    },
+                })
+                .groupBy("posts.id", "users.id")
+                .select((builder) => {
+                    builder
+                        .count("comments.id as comment_count")
+                        .from("comments")
+                        .whereRaw("comments.post_id = posts.id")
+                        .as("comment_count");
+                })
+                .select((builder) => {
+                    builder
+                        .count("likes.id as likes_count")
+                        .from("likes")
+                        .whereRaw("likes.post_id = posts.id")
+                        .as("likes_count");
+                })
+                .where("posts.id", newPost.id);
             res.status(201).json({
-                post: {
-                    id: newPost.id,
-                    user_id: newPost.user_id,
-                    title: newPost.title,
-                    body: newPost.body,
-                },
+                post: sendNewPost,
                 message: "Post successfully created",
             });
         } catch (error) {
