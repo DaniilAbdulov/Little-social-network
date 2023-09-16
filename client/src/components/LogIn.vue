@@ -121,6 +121,14 @@ export default {
     border-radius: 10px;
     /* padding: 10px; */
 }
+.log-reg-form h1 {
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+.log-reg-form button {
+    border: 2px solid black;
+    padding: 1px 3px;
+}
 .log-reg-form__item {
     display: flex;
     flex-direction: column;
@@ -131,7 +139,7 @@ export default {
     border: 2px solid red;
     box-shadow: inset 0px 0px 5px 0px red;
 }
-.log-reg-form__input {
+.log-reg-form__item input {
     border: 1px solid black;
     border-radius: 5px;
     padding: 10px;

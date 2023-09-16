@@ -4,6 +4,7 @@ import { PostsModule } from "@/store/PostsModule";
 import { CommentsModule } from "@/store/CommentsModule";
 import { TodosModule } from "@/store/TodosModule";
 import { LikesModule } from "@/store/LikesModule";
+import { UserModule } from "@/store/UserModule";
 export default createStore({
     modules: {
         lognsig: LogSignModule,
@@ -11,5 +12,6 @@ export default createStore({
         comments: CommentsModule,
         todos: TodosModule,
         likes: LikesModule,
+        user: UserModule,
     },
 });

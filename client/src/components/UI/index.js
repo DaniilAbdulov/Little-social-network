@@ -5,6 +5,7 @@ import CommentButton from "@/components/UI/CommentButton";
 import TrashButton from "@/components/UI/TrashButton";
 import BackButton from "@/components/UI/BackButton";
 import CreateButton from "@/components/UI/CreateButton";
+import LogOut from "@/components/UI/LogOut";
 export default [
     MySelect,
     MyDialog,
@@ -13,4 +14,5 @@ export default [
     TrashButton,
     BackButton,
     CreateButton,
+    LogOut,
 ];

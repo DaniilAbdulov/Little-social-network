@@ -125,7 +125,6 @@ export default {
     &__body {
         font-size: 20px;
         line-height: 20px;
-        margin-bottom: 15px;
     }
 }
 .v-enter-active,

@@ -32,18 +32,19 @@
                     @update:signUpVisible="updatesignUpVisible"
                 ></sign-up>
             </my-dialog>
-            <button
+            <log-out
                 class="navbar__link"
                 @click="logOutHandler"
                 v-if="adminIsAuthenticated || userIsAuthenticated"
             >
-                LogOut
-            </button>
+            </log-out>
             <div
                 class="navbar__avatar avatar"
                 v-if="adminIsAuthenticated || userIsAuthenticated"
             >
-                <div class="avatar__username">@{{ user_name }}</div>
+                <div class="avatar__username">
+                    <router-link to="/user">@{{ user_name }}</router-link>
+                </div>
             </div>
         </div>
     </nav>
@@ -53,6 +54,7 @@
 import { mapGetters, mapActions, mapState } from "vuex";
 import SignUp from "./SignUp.vue";
 import LogIn from "./LogIn.vue";
+import LogOut from "./UI/LogOut.vue";
 export default {
     data() {
         return {
@@ -63,6 +65,7 @@ export default {
     components: {
         LogIn,
         SignUp,
+        LogOut,
     },
     computed: {
         ...mapGetters("lognsig", {
@@ -101,8 +104,8 @@ export default {
 .navbar {
     display: flex;
     gap: 20px;
-    background: gold;
-    height: 30px;
+    background: #acabaa;
+    height: 40px;
     align-items: center;
     padding: 10px;
     margin-bottom: 30px;

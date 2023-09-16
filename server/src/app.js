@@ -19,6 +19,7 @@ app.use("/api/post", require("./routes/post"));
 app.use("/api/comment", require("./routes/comments"));
 app.use("/api/todos", require("./routes/todos"));
 app.use("/api/likes", require("./routes/likes"));
+app.use("/api/user", require("./routes/user_page"));
 
 app.get("/", (req, res) => {
     res.sendFile(join(__dirname, "..", "..", "client", "public", "index.html"));

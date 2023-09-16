@@ -13,7 +13,7 @@
                     placeholder="Введите комментарий..."
                     required
                 />
-                <create-button type="submit">create comment</create-button>
+                <button type="submit">create comment</button>
             </form>
         </div>
         <comments-list :post-id="postId"></comments-list>
@@ -64,6 +64,10 @@ export default {
 }
 .comment-form {
     margin-bottom: 20px;
+}
+.comment-form button {
+    border: 1px solid black;
+    padding: 1px 3px;
 }
 .comment-form input {
     border: 1px solid black;
