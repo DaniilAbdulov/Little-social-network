@@ -9,7 +9,6 @@
                 >
                     <div class="post__author">@{{ post.user.username }}</div>
                     <div class="post__title">{{ post.title }}</div>
-                    <p>Body length equal = #{{ post.body_length }}#</p>
                     <div class="post__body">
                         {{ post.body }}
                     </div>
@@ -26,13 +25,15 @@
                             >...see more</router-link
                         >
                     </div>
-                    <div class="post__time">{{ post.created_at }}</div>
-                    <div class="post__like">
-                        <button @click="toggleLike(post)">Like</button>
-                        <p>{{ post.likes_count }}</p>
-                    </div>
-                    <div class="post__comments">
-                        <button>
+                    <div class="post__time">{{ post.time }}</div>
+                    <div class="post__buttons">
+                        <div class="post__like">
+                            <like-button
+                                @click="toggleLike(post)"
+                            ></like-button>
+                            <p>{{ post.likes_count }}</p>
+                        </div>
+                        <div class="post__comments">
                             <router-link
                                 :to="{
                                     path: `/post/${post.id}/comments`,
@@ -41,13 +42,15 @@
                                         body: post.body,
                                     },
                                 }"
-                                >Comments</router-link
-                            >
-                        </button>
-                        <p>{{ post.comment_count }}</p>
-                    </div>
-                    <div class="post__delete">
-                        <button @click="deletePostHandler(post)">Delete</button>
+                                ><comment-button></comment-button
+                            ></router-link>
+
+                            <p>{{ post.comment_count }}</p>
+                        </div>
+                        <div class="post__delete">
+                            <trash-button @click="deletePostHandler(post)">
+                            </trash-button>
+                        </div>
                     </div>
                 </li>
             </TransitionGroup>
@@ -55,14 +58,21 @@
         <div v-if="showErrorOrNot" class="error-message">
             {{ this.postErrorMessage }}
         </div>
-        <div v-intersection="getMorePosts" class="observer"></div>
+        <div
+            v-intersection="getMorePosts"
+            v-if="posts.length !== 0"
+            class="observer"
+        ></div>
     </div>
 </template>
 
 <script>
 import { mapActions, mapState } from "vuex";
+import CommentButton from "./UI/CommentButton.vue";
+import LikeButton from "./UI/LikeButton.vue";
 
 export default {
+    components: { LikeButton, CommentButton },
     data() {
         return {
             lengthOfVisibleChars: 0,
@@ -156,9 +166,6 @@ export default {
 </script>
 
 <style lang="scss">
-.posts {
-    color: white;
-}
 .posts__hidden {
     opacity: 0.1;
     transition: all 0.5s ease-out;
@@ -204,6 +211,7 @@ export default {
         font-size: 32px;
         font-weight: bold;
         margin-bottom: 15px;
+        text-decoration: underline;
     }
     &__body {
         font-size: 24px;
@@ -216,16 +224,27 @@ export default {
     &__continue {
         font-size: 22px;
         font-weight: 700;
-        color: white;
     }
     &__time {
         font-style: italic;
         letter-spacing: 1px;
+        margin-bottom: 10px;
+    }
+    &__buttons {
+        display: flex;
+        align-items: center;
     }
     &__comments,
     &__like {
         display: flex;
         gap: 5px;
+        align-items: center;
+    }
+    &__like {
+        margin-right: 5px;
+    }
+    &__comments {
+        flex: 1 1 auto;
     }
 }
 .observer {

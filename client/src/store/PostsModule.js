@@ -1,5 +1,5 @@
 import axios from "axios";
-
+const moment = require("moment");
 export const PostsModule = {
     state: () => ({
         post: {
@@ -9,7 +9,7 @@ export const PostsModule = {
         posts: [],
         postErrorMessage: "",
         requestedCountOfPosts: 0,
-        postLimit: 3,
+        postLimit: 4,
         postsCount: 0,
     }),
     getters: {},
@@ -34,6 +34,12 @@ export const PostsModule = {
         },
         ADD_POST_METADATA(state) {
             state.posts.forEach((post) => {
+                const date = post.created_at;
+                const formattedDate = moment(date)
+                    .local()
+                    .locale("ru")
+                    .format("DD MMMM YYYYг. в HH:mm");
+                post.time = formattedDate;
                 post.indexOfPopular = +post.comment_count + +post.likes_count;
                 post.body_length = post.body.length;
             });
@@ -53,6 +59,7 @@ export const PostsModule = {
                     body: post.body,
                 });
                 commit("ADD_NEW_POST", response.data.post[0]);
+                commit("ADD_POST_METADATA");
             } catch (error) {
                 console.log(error);
             }
@@ -80,10 +87,7 @@ export const PostsModule = {
             const requestedCountOfPosts = state.requestedCountOfPosts;
             const postLimit = state.postLimit;
             const postsCount = state.postsCount;
-            if (
-                requestedCountOfPosts + postsCount !== requestedCountOfPosts &&
-                requestedCountOfPosts > postsCount
-            ) {
+            if (requestedCountOfPosts + postLimit * 2 > postsCount * 2) {
                 return;
             }
 

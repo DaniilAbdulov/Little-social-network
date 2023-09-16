@@ -16,7 +16,7 @@
                                     @{{ com.username }}
                                 </div>
                                 <div class="comment__time">
-                                    {{ com.created_at }}
+                                    {{ com.time }}
                                 </div>
                                 <div
                                     v-if="
@@ -25,7 +25,7 @@
                                     "
                                     class="comment__delete"
                                 >
-                                    <button
+                                    <trash-button
                                         @click="
                                             deleteCommentHandler({
                                                 com,
@@ -33,8 +33,7 @@
                                             })
                                         "
                                     >
-                                        delete
-                                    </button>
+                                    </trash-button>
                                 </div>
                             </div>
                             <div class="comment__body">
@@ -89,6 +88,7 @@ export default {
             this.showErrorOrNot = true;
             setTimeout(() => {
                 this.showErrorOrNot = false;
+                this.$store.commit("comments/SET_ERROR_MESSAGE", "");
             }, 2000);
         },
         ...mapActions("comments", {
@@ -102,15 +102,12 @@ export default {
 };
 </script>
 <style lang="scss">
-.comments {
-    color: white;
-}
 .comments__hidden {
     opacity: 0.1;
     transition: all 0.5s ease-out;
 }
 .comment {
-    border-bottom: 1px solid white;
+    border-bottom: 1px solid rgb(127, 127, 127);
     padding: 10px;
     margin-bottom: 10px;
     &__container {

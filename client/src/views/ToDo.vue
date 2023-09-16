@@ -73,9 +73,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.content {
-    background: rgb(46, 45, 45);
-}
 .form__container {
     padding: 0px 10px;
     margin-bottom: 20px;
@@ -133,7 +130,6 @@ form {
 .todo__empty {
     font-size: 20px;
     line-height: 20px;
-    color: white;
     text-align: center;
 }
 ul {

@@ -1,4 +1,5 @@
 import axios from "axios";
+const moment = require("moment");
 export const CommentsModule = {
     state: () => ({
         comment: {
@@ -28,6 +29,16 @@ export const CommentsModule = {
                 (comment) => comment.id !== com_id
             );
         },
+        ADD_COMMENT_METADATA(state) {
+            state.comments.forEach((comment) => {
+                const date = comment.created_at;
+                const formattedDate = moment(date)
+                    .local()
+                    .locale("ru")
+                    .format("DD MMMM YYYYг. в HH:mm");
+                comment.time = formattedDate;
+            });
+        },
     },
     actions: {
         async createCommentInDB({ commit }, comment) {
@@ -37,6 +48,7 @@ export const CommentsModule = {
                     post_id: comment.post_id,
                 });
                 commit("UPDATE__COMMENTS", response.data.newComment[0]);
+                commit("ADD_COMMENT_METADATA");
             } catch (error) {
                 commit("SET_ERROR_MESSAGE", error.response.data.message);
             }
@@ -48,6 +60,7 @@ export const CommentsModule = {
                     `/api/comment/commentsofpost/${postId}`
                 );
                 commit("SET_COMMENTS_OF_POST", response.data.comments);
+                commit("ADD_COMMENT_METADATA");
                 commit("SET_LOADING", false);
             } catch (error) {
                 commit("SET_ERROR_MESSAGE", error.response.data.message);

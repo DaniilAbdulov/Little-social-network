@@ -57,8 +57,10 @@ body {
     -ms-text-size-adjust: 100%;
     -moz-text-size-adjust: 100%;
     -webkit-text-size-adjust: 100%;
-    background-color: rgb(46, 45, 45);
-    color: white;
+    /* background-color: rgb(46, 45, 45);
+    color: white; */
+    background-color: rgb(255, 255, 255);
+    color: rgb(0, 0, 0);
     font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
 }
 input,
@@ -71,6 +73,7 @@ input::-ms-clear {
 }
 button {
     cursor: pointer;
+    background: transparent;
 }
 button::-moz-focus-inner {
     padding: 0;
