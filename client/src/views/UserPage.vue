@@ -61,7 +61,7 @@ export default {
         width: 300px;
         height: 300px;
         border-radius: 50%;
-        border: 1px solid black;
+        border: 10px solid black;
         margin: 0 auto;
     }
     &__information,

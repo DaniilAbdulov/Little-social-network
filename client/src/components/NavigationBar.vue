@@ -42,9 +42,11 @@
                 class="navbar__avatar avatar"
                 v-if="adminIsAuthenticated || userIsAuthenticated"
             >
-                <div class="avatar__username">
-                    <router-link to="/user">@{{ user_name }}</router-link>
-                </div>
+                <router-link to="/user"
+                    ><div class="avatar__username">
+                        @{{ user_name }}
+                    </div></router-link
+                >
             </div>
         </div>
     </nav>
@@ -113,8 +115,8 @@ export default {
     justify-content: space-between;
 }
 .navbar__link {
-    color: black;
     text-decoration: none;
+    color: black;
 }
 .navbar__content,
 .navbar__auth {
@@ -127,5 +129,6 @@ export default {
 .avatar {
 }
 .avatar__username {
+    color: black;
 }
 </style>

@@ -40,14 +40,14 @@ body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    align-items: center; /* добавить для центрирования элементов по горизонтали */
+    align-items: center;
 }
 .container {
-    display: flex; /* добавить для применения свойств Flexbox */
-    justify-content: center; /* добавить для центрирования содержимого по горизонтали */
+    display: flex;
+    justify-content: center;
     max-width: 1280px;
     padding: 0px 15px;
-    width: 100%; /* для поддержки разных размеров экрана */
+    width: 100%;
     flex: 1 0 auto;
 }
 .footer {

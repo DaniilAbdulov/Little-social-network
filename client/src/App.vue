@@ -1,5 +1,5 @@
 <template>
-    <div class="app">
+    <div class="app" :class="{ 'app-dark': isDarkTheme }">
         <navigation-bar />
         <div class="container">
             <router-view></router-view>
@@ -11,11 +11,16 @@
 <script>
 import FooterBar from "./components/FooterBar.vue";
 import NavigationBar from "./components/NavigationBar.vue";
-
+import { mapState } from "vuex";
 export default {
     components: {
         NavigationBar,
         FooterBar,
+    },
+    computed: {
+        ...mapState("theme", {
+            isDarkTheme: (state) => state.isDarkTheme,
+        }),
     },
     name: "App",
     created() {
@@ -24,4 +29,9 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.app-dark {
+    background: rgb(11 11 11);
+    color: white;
+}
+</style>
