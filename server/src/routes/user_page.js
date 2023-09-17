@@ -13,29 +13,39 @@ router.get(
     "/info/",
     authenticate,
     asyncHandler(async (req, res) => {
-        const user_id = req.userId;
-        const userInfo = await User.query()
+        const { userId: user_id } = req;
+
+        const userInfoPromise = User.query()
             .select("username", "email", "created_at")
             .where("id", user_id);
-        const postsCount = await Post.query()
+        const postsCountPromise = Post.query()
             .count("id")
             .where("user_id", user_id);
-        const commentsCount = await Comments.query()
+        const commentsCountPromise = Comments.query()
             .count("id")
             .where("user_id", user_id);
-        const likesCount = await Likes.query()
+        const likesCountPromise = Likes.query()
             .count("id")
             .where("user_id", user_id);
-        const todosCount = await Todos.query()
+        const todosCountPromise = Todos.query()
             .count("id")
             .where("user_id", user_id);
 
+        const [userInfo, postsCount, commentsCount, likesCount, todosCount] =
+            await Promise.all([
+                userInfoPromise,
+                postsCountPromise,
+                commentsCountPromise,
+                likesCountPromise,
+                todosCountPromise,
+            ]);
+
         res.status(200).json({
-            userInfo: userInfo,
-            postsCount: postsCount,
-            commentsCount: commentsCount,
-            likesCount: likesCount,
-            todosCount: todosCount,
+            userInfo,
+            postsCount,
+            commentsCount,
+            likesCount,
+            todosCount,
             message: "Info was sended",
         });
     })
