@@ -1,5 +1,5 @@
 import axios from "axios";
-const moment = require("moment");
+import moment from "moment";
 export const PostsModule = {
     state: () => ({
         post: {
