@@ -2,15 +2,22 @@
     <div class="social-button">
         <button>
             <div class="social-button__logo">
-                <img src="@/assets/trash.svg" />
+                <img v-if="!isDarkTheme" src="@/assets/trash.svg" />
+                <img v-else src="@/assets/trash-white.png" />
             </div>
         </button>
         <slot></slot>
     </div>
 </template>
 <script>
+import { mapState } from "vuex";
 export default {
     name: "trash-button",
+    computed: {
+        ...mapState("theme", {
+            isDarkTheme: (state) => state.isDarkTheme,
+        }),
+    },
 };
 </script>
 

@@ -202,7 +202,7 @@ export default {
 .posts__container {
 }
 .post {
-    border: 1px solid black;
+    border: 1px solid rgb(139, 139, 139);
     border-radius: 10px;
     padding: 15px;
     margin-bottom: 10px;

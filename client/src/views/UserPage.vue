@@ -9,7 +9,10 @@
                         Registred: {{ user.registration }}
                     </div>
                 </div>
-                <div class="user-page__avatar"></div>
+                <div
+                    class="user-page__avatar"
+                    :class="{ 'user-page__avatar-dark': isDarkTheme }"
+                ></div>
                 <div class="user-page__statistics ustat">
                     <div class="ustat__item">
                         Count of posts: {{ user.postsCount }}
@@ -42,6 +45,9 @@ export default {
         ...mapState("user", {
             user: (state) => state.user,
         }),
+        ...mapState("theme", {
+            isDarkTheme: (state) => state.isDarkTheme,
+        }),
     },
     mounted() {
         this.getInfoAboutUser();
@@ -63,7 +69,11 @@ export default {
         border-radius: 50%;
         border: 10px solid black;
         margin: 0 auto;
+        &-dark {
+            border: 10px solid rgb(255, 255, 255);
+        }
     }
+
     &__information,
     &__statistics {
         display: flex;

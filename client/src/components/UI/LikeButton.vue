@@ -2,15 +2,22 @@
     <div class="social-button">
         <button>
             <div class="social-button__logo">
-                <img src="@/assets/like.svg" />
+                <img v-if="!isDarkTheme" src="@/assets/like.svg" />
+                <img v-else src="@/assets/like-white.png" />
             </div>
         </button>
         <slot></slot>
     </div>
 </template>
 <script>
+import { mapState } from "vuex";
 export default {
     name: "like-button",
+    computed: {
+        ...mapState("theme", {
+            isDarkTheme: (state) => state.isDarkTheme,
+        }),
+    },
 };
 </script>
 
