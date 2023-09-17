@@ -6,6 +6,7 @@ import components from "@/components/UI/";
 import router from "@/router/router";
 import directives from "@/directives/index";
 import store from "@/store/store";
+import "./assets/style.css";
 
 const app = createApp(App);
 directives.forEach((directive) => {

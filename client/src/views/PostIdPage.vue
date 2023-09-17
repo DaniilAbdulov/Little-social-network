@@ -56,12 +56,10 @@ export default {
 </script>
 <style scoped>
 .post-id-page {
+    max-width: none;
+    width: 100%;
 }
-@media (max-width: 500px) {
-    .post-id-page {
-        margin-top: 80px;
-    }
-}
+
 .comment-form {
     margin-bottom: 20px;
 }

@@ -73,6 +73,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.content {
+    max-width: none;
+    width: 100%;
+}
 .form__container {
     padding: 0px 10px;
     margin-bottom: 20px;

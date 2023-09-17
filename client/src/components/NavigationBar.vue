@@ -102,6 +102,7 @@ export default {
 
 <style>
 .navbar {
+    width: 100%;
     display: flex;
     gap: 20px;
     background: #acabaa;
