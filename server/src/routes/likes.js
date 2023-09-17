@@ -27,7 +27,7 @@ router.post(
             res.status(200).json({ message: "Like removed" });
         } else {
             try {
-                const newLike = await Likes.query().insert({
+                await Likes.query().insert({
                     user_id: userId,
                     post_id: postId,
                 });
