@@ -5,44 +5,49 @@ const Post = require("../models/Post");
 
 let router = express.Router();
 
+const getPostData = (queryBuilder) => {
+    return queryBuilder
+        .select(
+            "posts.id",
+            "posts.title",
+            "posts.body",
+            "posts.created_at",
+            "posts.user_id"
+        )
+        .leftJoinRelated("comments")
+        .joinRelated("user as users")
+        .withGraphFetched("user(selectUsername)")
+        .modifiers({
+            selectUsername(builder) {
+                builder.select("username");
+            },
+        })
+        .groupBy("posts.id", "users.id")
+        .select((builder) => {
+            builder
+                .count("comments.id as comment_count")
+                .from("comments")
+                .whereRaw("comments.post_id = posts.id")
+                .as("comment_count");
+        })
+        .select((builder) => {
+            builder
+                .count("likes.id as likes_count")
+                .from("likes")
+                .whereRaw("likes.post_id = posts.id")
+                .as("likes_count");
+        });
+};
+
 router.get(
     "/posts",
     asyncHandler(async (req, res) => {
         const postLength = await Post.query().count("id").first();
         const { requestedCountOfPosts, postLimit } = req.query;
-        const allPosts = await Post.query()
-            .select(
-                "posts.id",
-                "posts.title",
-                "posts.body",
-                "posts.created_at",
-                "posts.user_id"
-            )
-            .leftJoinRelated("comments")
-            .joinRelated("user as users")
-            .withGraphFetched("user(selectUsername)")
-            .modifiers({
-                selectUsername(builder) {
-                    builder.select("username");
-                },
-            })
-            .groupBy("posts.id", "users.id")
+
+        const allPosts = await getPostData(Post.query())
             .limit(postLimit)
-            .offset(requestedCountOfPosts)
-            .select((builder) => {
-                builder
-                    .count("comments.id as comment_count")
-                    .from("comments")
-                    .whereRaw("comments.post_id = posts.id")
-                    .as("comment_count");
-            })
-            .select((builder) => {
-                builder
-                    .count("likes.id as likes_count")
-                    .from("likes")
-                    .whereRaw("likes.post_id = posts.id")
-                    .as("likes_count");
-            });
+            .offset(requestedCountOfPosts);
 
         res.status(200).json({
             posts: allPosts,
@@ -51,11 +56,13 @@ router.get(
         });
     })
 );
+
 router.post(
     "/newpost",
     authenticate,
     asyncHandler(async (req, res) => {
         const { title, body } = req.body;
+
         try {
             const newPost = await Post.query()
                 .insert({
@@ -64,38 +71,12 @@ router.post(
                     body,
                 })
                 .skipUndefined();
-            const sendNewPost = await Post.query()
-                .select(
-                    "posts.id",
-                    "posts.title",
-                    "posts.body",
-                    "posts.created_at",
-                    "posts.user_id"
-                )
-                .leftJoinRelated("comments")
-                .joinRelated("user as users")
-                .withGraphFetched("user(selectUsername)")
-                .modifiers({
-                    selectUsername(builder) {
-                        builder.select("username");
-                    },
-                })
-                .groupBy("posts.id", "users.id")
-                .select((builder) => {
-                    builder
-                        .count("comments.id as comment_count")
-                        .from("comments")
-                        .whereRaw("comments.post_id = posts.id")
-                        .as("comment_count");
-                })
-                .select((builder) => {
-                    builder
-                        .count("likes.id as likes_count")
-                        .from("likes")
-                        .whereRaw("likes.post_id = posts.id")
-                        .as("likes_count");
-                })
-                .where("posts.id", newPost.id);
+
+            const sendNewPost = await getPostData(Post.query()).where(
+                "posts.id",
+                newPost.id
+            );
+
             res.status(201).json({
                 post: sendNewPost,
                 message: "Post successfully created",
@@ -106,11 +87,13 @@ router.post(
         }
     })
 );
+
 router.delete(
     "/deletepost",
     authenticate,
     asyncHandler(async (req, res) => {
         const { post_id, user_id } = req.body;
+
         if (
             !Number.isInteger(post_id) ||
             !Number.isInteger(user_id) ||
