@@ -84,6 +84,10 @@ export default {
 
 <style lang="scss">
 .create-search-sort {
+    position: sticky;
+    padding: 15px 0px;
+    top: 0px;
+    background: white;
     display: flex;
     gap: 10px;
     align-items: center;
