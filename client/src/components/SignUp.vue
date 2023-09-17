@@ -21,7 +21,6 @@
                 <button type="submit">Sign Up</button>
             </form>
         </div>
-        <div>{{ errorMessage }}</div>
     </div>
 </template>
 
