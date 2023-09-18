@@ -5,7 +5,10 @@
             <div class="post__title">{{ postTitle }}</div>
             <div class="post__body">{{ postBody }}</div>
         </div>
-        <div class="comment-form">
+        <div
+            class="comment-form"
+            :class="{ 'comment-form-active': isDarkTheme }"
+        >
             <form @submit.prevent="createComment">
                 <input
                     type="text"
@@ -21,7 +24,7 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapState } from "vuex";
 import CommentsList from "../components/CommentsList.vue";
 export default {
     components: { CommentsList },
@@ -35,6 +38,11 @@ export default {
             postTitle: this.$route.query.title,
             postBody: this.$route.query.body,
         };
+    },
+    computed: {
+        ...mapState("theme", {
+            isDarkTheme: (state) => state.isDarkTheme,
+        }),
     },
     methods: {
         async createComment() {
@@ -66,6 +74,10 @@ export default {
 .comment-form button {
     border: 1px solid black;
     padding: 1px 3px;
+}
+.comment-form-active button {
+    border: 1px solid white;
+    color: white;
 }
 .comment-form input {
     border: 1px solid black;

@@ -1,7 +1,11 @@
 <template>
     <div>
         <div class="posts" :class="{ posts__hidden: showErrorOrNot }">
-            <TransitionGroup name="list" tag="ul">
+            <TransitionGroup
+                name="list"
+                tag="ul"
+                v-if="sortedAndSearchedPosts.length"
+            >
                 <li
                     class="post"
                     v-for="post in sortedAndSearchedPosts"
@@ -55,6 +59,7 @@
                     </div>
                 </li>
             </TransitionGroup>
+            <div v-else>No results</div>
         </div>
         <div v-if="showErrorOrNot" class="error-message">
             {{ this.postErrorMessage }}
@@ -252,6 +257,5 @@ export default {
 }
 .observer {
     height: 30px;
-    border: 1px solid black;
 }
 </style>

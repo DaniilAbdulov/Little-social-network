@@ -1,7 +1,10 @@
 <template>
     <div>
         <div class="content" v-if="userIsAuthenticated"></div>
-        <div class="create-search-sort">
+        <div
+            class="create-search-sort"
+            :class="{ 'create-search-sort-active': isDarkTheme }"
+        >
             <div class="create-search-sort__create">
                 <create-button @click="showDialog">Create post</create-button>
             </div>
@@ -13,12 +16,17 @@
             </my-dialog>
             <div class="create-search-sort__search">
                 <div>
-                    <div class="search">
+                    <div
+                        class="search"
+                        :class="{ 'search-active': isDarkTheme }"
+                    >
                         <input
+                            class="search__input"
                             type="text"
                             name="search"
                             placeholder="search"
                             v-model="searchQuery"
+                            :style="{ color: isDarkTheme ? 'white' : 'black' }"
                         />
                     </div>
                 </div>
@@ -35,7 +43,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions, mapState } from "vuex";
 import PostsList from "@/components/PostsList.vue";
 import PostForm from "@/components/PostForm.vue";
 import CreateButton from "../components/UI/CreateButton.vue";
@@ -75,6 +83,9 @@ export default {
             adminIsAuthenticated: "adminIsAuthenticated",
             userIsAuthenticated: "userIsAuthenticated",
         }),
+        ...mapState("theme", {
+            isDarkTheme: (state) => state.isDarkTheme,
+        }),
     },
     mounted() {
         this.getPosts();
@@ -84,6 +95,7 @@ export default {
 
 <style lang="scss">
 .create-search-sort {
+    min-width: 100%;
     position: sticky;
     padding: 15px 0px;
     top: 0px;
@@ -91,6 +103,9 @@ export default {
     display: flex;
     gap: 10px;
     align-items: center;
+    &-active {
+        background: black;
+    }
     &__create {
     }
     &__search {
@@ -98,7 +113,11 @@ export default {
         border: 1px solid;
         padding: 0px 5px;
         border-radius: 5px;
+        & input {
+            background: transparent;
+        }
     }
+
     &__sort {
     }
 }
