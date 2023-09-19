@@ -1,12 +1,18 @@
 <template>
     <div class="signup-page">
-        <div class="log-reg-form">
+        <div
+            class="log-reg-form"
+            :class="{ 'log-reg-form-active': isDarkTheme }"
+        >
             <h1>Sign Up</h1>
             <form @submit.prevent="handleSubmit">
                 <div v-for="(field, index) in fields" :key="index">
                     <div
                         class="log-reg-form__item"
-                        :class="{ 'log-reg-form__error': errors[field.name] }"
+                        :class="{
+                            'log-reg-form__error': errors[field.name],
+                            'log-reg-form-active__item': isDarkTheme,
+                        }"
                     >
                         <label :for="field.name">{{ field.label }}</label>
                         <input
@@ -25,7 +31,7 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapState } from "vuex";
 export default {
     props: {
         signUpVisible: {
@@ -123,6 +129,10 @@ export default {
         errorMessage() {
             return this.$store.state.lognsig.regErrorMessage;
         },
+        ...mapState("theme", {
+            isDarkTheme: (state) => state.isDarkTheme,
+        }),
     },
 };
 </script>
+<style lang="scss"></style>

@@ -2,13 +2,17 @@
     <div class="login-page">
         <div
             class="log-reg-form"
+            :class="{ 'log-reg-form-active': isDarkTheme }"
             v-if="!adminIsAuthenticated || !userIsAuthenticated"
         >
             <h1>Log In</h1>
             <form @submit.prevent="handleSubmit">
                 <div
                     class="log-reg-form__item"
-                    :class="{ 'log-reg-form__error': userError }"
+                    :class="{
+                        'log-reg-form__error': passwordError,
+                        'log-reg-form-active__item': isDarkTheme,
+                    }"
                 >
                     <label for="username">Username:</label>
                     <input
@@ -23,7 +27,10 @@
                 </div>
                 <div
                     class="log-reg-form__item"
-                    :class="{ 'log-reg-form__error': passwordError }"
+                    :class="{
+                        'log-reg-form__error': passwordError,
+                        'log-reg-form-active__item': isDarkTheme,
+                    }"
                 >
                     <label for="password">Password:</label>
                     <input
@@ -43,7 +50,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions, mapState } from "vuex";
 
 export default {
     props: {
@@ -104,6 +111,9 @@ export default {
             adminIsAuthenticated: "adminIsAuthenticated",
             userIsAuthenticated: "userIsAuthenticated",
         }),
+        ...mapState("theme", {
+            isDarkTheme: (state) => state.isDarkTheme,
+        }),
         errorMessage() {
             return this.$store.state.lognsig.errorMessage;
         },
@@ -111,7 +121,7 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
 .log-reg-form {
     display: flex;
     flex-direction: column;
@@ -119,31 +129,50 @@ export default {
     max-width: 300px;
     margin: 0 auto;
     border-radius: 10px;
-    /* padding: 10px; */
-}
-.log-reg-form h1 {
-    margin-bottom: 10px;
-    font-weight: bold;
-}
-.log-reg-form button {
-    border: 2px solid black;
-    padding: 1px 3px;
-}
-.log-reg-form__item {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    margin-bottom: 10px;
-}
-.log-reg-form__error input {
-    border: 2px solid red;
-    box-shadow: inset 0px 0px 5px 0px red;
-}
-.log-reg-form__item input {
-    border: 1px solid black;
-    border-radius: 5px;
-    padding: 10px;
-    font-size: 14px;
-    line-height: 14px;
+    color: black;
+    & h1 {
+        margin-bottom: 10px;
+        font-weight: bold;
+    }
+    & button {
+        border: 2px solid black;
+        padding: 1px 3px;
+    }
+    &__item {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        margin-bottom: 10px;
+    }
+    &__error input {
+        border: 2px solid red;
+        box-shadow: inset 0px 0px 5px 0px red;
+    }
+    &__item input {
+        border: 1px solid black;
+        border-radius: 5px;
+        padding: 10px;
+        font-size: 14px;
+        line-height: 14px;
+        &::placeholder {
+            color: pink;
+        }
+    }
+    &-active {
+        & h1 {
+            color: white;
+        }
+        & button {
+            border: 2px solid rgb(255, 255, 255);
+            color: white;
+        }
+        &__item input {
+            border: 1px solid rgb(255, 255, 255);
+            color: red;
+        }
+        &__item label {
+            color: white;
+        }
+    }
 }
 </style>

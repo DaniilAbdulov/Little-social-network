@@ -7,6 +7,7 @@
                 v-model="post.title"
                 required
                 class="post-form__title"
+                :class="{ 'post-form__title-active': isDarkTheme }"
             />
             <textarea
                 type="text"
@@ -14,14 +15,21 @@
                 v-model="post.body"
                 required
                 class="post-form__body"
+                :class="{ 'post-form__body-active': isDarkTheme }"
             />
-            <button type="submit" class="post-form__create">create</button>
+            <button
+                type="submit"
+                class="post-form__create"
+                :class="{ 'post-form__create-active': isDarkTheme }"
+            >
+                create
+            </button>
         </form>
     </div>
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions, mapState } from "vuex";
 export default {
     props: {
         post: {
@@ -48,6 +56,11 @@ export default {
             createPostInDB: "createPostInDB",
         }),
     },
+    computed: {
+        ...mapState("theme", {
+            isDarkTheme: (state) => state.isDarkTheme,
+        }),
+    },
 };
 </script>
 
@@ -65,12 +78,20 @@ export default {
     &__body {
         min-height: 200px;
     }
+    &__title-active,
+    &__body-active {
+        border: 1px solid rgb(255, 255, 255);
+    }
     &__create {
         max-width: 100px;
         margin: 0 auto;
         border: 1px solid black;
         background: none;
         padding: 5px;
+        &-active {
+            border: 1px solid rgb(255, 255, 255);
+            color: white;
+        }
     }
 }
 </style>

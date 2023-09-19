@@ -1,12 +1,17 @@
 <template>
     <div class="dialog" v-if="show" @click.stop="hideDialog">
-        <div @click.stop class="dialog__content">
+        <div
+            @click.stop
+            class="dialog__content"
+            :class="{ 'dialog__content-active': isDarkTheme }"
+        >
             <slot></slot>
         </div>
     </div>
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
     name: "my-dialog",
     props: {
@@ -19,6 +24,11 @@ export default {
         hideDialog() {
             this.$emit("update:show", false);
         },
+    },
+    computed: {
+        ...mapState("theme", {
+            isDarkTheme: (state) => state.isDarkTheme,
+        }),
     },
 };
 </script>
@@ -40,5 +50,8 @@ export default {
     min-height: 50px;
     min-width: 380px;
     padding: 20px;
+}
+.dialog__content-active {
+    background: rgb(51, 50, 50);
 }
 </style>
