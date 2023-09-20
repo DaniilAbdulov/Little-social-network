@@ -11,4 +11,4 @@
 -   npm run install
 -   cd ..
 -   npm run start
-    Join my project !
+Join my project
