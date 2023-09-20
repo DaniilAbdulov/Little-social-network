@@ -1,6 +1,7 @@
 1. Create a Postgres database on your computer with any name
 2. Clone this repository to your PC
-3. Next, enter into the terminal:
+3. In the server\.env please enter your PostgreSQL configuration
+4. Next, enter into the terminal:
 
 -   npm install
 -   cd client
