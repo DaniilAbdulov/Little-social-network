@@ -14,4 +14,4 @@ To launch this project, you need to:
 -   cd ..
 -   npm run start
 
-5.Join my project
+5. Join my project
